@@ -18,16 +18,19 @@ public class StartWindow extends JFrame {
     public StartWindow() {
         super("Выбор способа ввода");
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        this.setMinimumSize(new Dimension(800, 600));
-        this.setBounds(10, 10, 800, 600);
+        this.setMinimumSize(new Dimension(1100, 600));
+        this.setBounds(10, 10, 1100, 600);
 
         panel = new JPanel(true);
         this.add(panel);
         panel.setLayout(null);
 
-        fileButton = new JButton("Ввод из файла");
-        mouseButton = new JButton("Ввод мышью");
-        keyboardButton = new JButton("Ввод с клавиатуры");
+        fileButton = new JButton("File Input");
+        fileButton.setFont(Main.BigFont);
+        mouseButton = new JButton("Mouse Input");
+        mouseButton.setFont(Main.BigFont);
+        keyboardButton = new JButton("Keyboard Input");
+        keyboardButton.setFont(Main.BigFont);
 
         panel.add(fileButton);
         panel.add(mouseButton);
@@ -69,5 +72,12 @@ public class StartWindow extends JFrame {
         Main.setRelativeSize(0.2, 0.1, 0.6, 0.2, fileButton, panel);
         Main.setRelativeSize(0.2, 0.4, 0.6, 0.2, mouseButton, panel);
         Main.setRelativeSize(0.2, 0.7, 0.6, 0.2, keyboardButton, panel);
+
+        int diagonal = (int) Math.sqrt(panel.getHeight() * panel.getHeight() + panel.getWidth() * panel.getWidth());
+        Font font = new Font("Liberation Mono", Font.BOLD, (int) (diagonal * 0.05));
+
+        fileButton.setFont(font);
+        mouseButton.setFont(font);
+        keyboardButton.setFont(font);
     }
 }

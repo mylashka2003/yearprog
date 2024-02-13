@@ -20,7 +20,7 @@ public class ContentFile  {
 
             while (fin.hasNext()) {
                 if (index >= 1000) {
-                    JOptionPane.showMessageDialog(parentComponent, "Некорректная структура в файла!");
+                    JOptionPane.showMessageDialog(parentComponent, "Некорректная структура в файла!", "Error!", JOptionPane.ERROR_MESSAGE);
                     return false;
                 }
 
@@ -28,7 +28,7 @@ public class ContentFile  {
                 String[] sd = s.split(" ");
 
                 if (sd.length != 2) {
-                    JOptionPane.showMessageDialog(parentComponent, "Некорректная структура в файла!");
+                    JOptionPane.showMessageDialog(parentComponent, "Некорректная структура в файла!", "Error!", JOptionPane.ERROR_MESSAGE);
                     return false;
                 }
 
@@ -38,9 +38,13 @@ public class ContentFile  {
                     pointsCur[index] = new Point(x, y);
                     index++;
                 } catch (NumberFormatException e) {
-                    JOptionPane.showMessageDialog(parentComponent, "Некорректная структура в файла!");
+                    JOptionPane.showMessageDialog(parentComponent, "Некорректная структура в файла!", "Error!", JOptionPane.ERROR_MESSAGE);
                     return false;
                 }
+            }
+
+            if (index < 4) {
+                JOptionPane.showMessageDialog(parentComponent, "Введено слишком мало точек!", "Error!", JOptionPane.ERROR_MESSAGE);
             }
 
             Main.points = pointsCur;
@@ -50,7 +54,7 @@ public class ContentFile  {
             parentComponent.dispose();
             return true;
         } catch (FileNotFoundException e) {
-            JOptionPane.showMessageDialog(parentComponent, "Некорректно выбран файл!");
+            JOptionPane.showMessageDialog(parentComponent, "Некорректно выбран файл!", "Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
     }
