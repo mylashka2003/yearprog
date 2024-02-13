@@ -8,8 +8,6 @@ import java.awt.event.ComponentEvent;
 public class MouseInputWindow extends JFrame {
     private final JPanel panel;
     private final JButton finishButton;
-    //private final int bigBorder = 0;
-    //private final int smallBorder = 0;
     public MouseInputWindow() {
         super("Ввод данных мышью");
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -37,7 +35,7 @@ public class MouseInputWindow extends JFrame {
     }
 
     private void resized() {
-        finishButton.setBounds((int) (panel.getWidth() * 0.89), (int) (panel.getHeight() * 0.93), (int) (panel.getWidth() * 0.1), (int) (panel.getHeight() * 0.05));
+        finishButton.setBounds(panel.getWidth() - 125, panel.getHeight() - 75, 100, 50);
     }
 
     public void drawCoordinateGrid(Graphics g) {

@@ -1,7 +1,7 @@
 package ru.yearprog.startWindow;
 
+import ru.yearprog.File.ContentFile;
 import ru.yearprog.Main;
-import ru.yearprog.selectionWindows.FileSelectionWindow;
 import ru.yearprog.selectionWindows.KeyboardInputWindow;
 import ru.yearprog.selectionWindows.MouseInputWindow;
 
@@ -14,6 +14,7 @@ public class StartWindow extends JFrame {
     private final JButton mouseButton;
     private final JButton keyboardButton;
     private final JPanel panel;
+
     public StartWindow() {
         super("Выбор способа ввода");
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -33,8 +34,16 @@ public class StartWindow extends JFrame {
         panel.add(keyboardButton);
 
         fileButton.addActionListener(e -> {
-            FileSelectionWindow fileSelectionWindow = new FileSelectionWindow();
-            this.dispose();
+            JFileChooser fileChooser = new JFileChooser();
+
+            fileChooser.setDialogTitle("Выберите файл для открытия");
+            if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+                boolean res = ContentFile.readFile(fileChooser.getSelectedFile(), this);
+
+                if (res) {
+                    // open final window
+                }
+            }
         });
 
         mouseButton.addActionListener(e -> {

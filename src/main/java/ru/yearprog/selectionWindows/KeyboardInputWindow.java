@@ -37,7 +37,7 @@ public class KeyboardInputWindow extends JFrame {
     }
 
     private void resized() {
-        nextButton.setBounds((int) (panel.getWidth() * 0.76), (int) (panel.getHeight() * 0.92), (int) (panel.getWidth() * 0.1), (int) (panel.getHeight() * 0.05));
-        finishButton.setBounds((int) (panel.getWidth() * 0.88), (int) (panel.getHeight() * 0.92), (int) (panel.getWidth() * 0.1), (int) (panel.getHeight() * 0.05));
+        nextButton.setBounds(panel.getWidth() - 250, panel.getHeight() - 75, 100, 50);
+        finishButton.setBounds(panel.getWidth() - 125, panel.getHeight() - 75, 100, 50);
     }
 }
