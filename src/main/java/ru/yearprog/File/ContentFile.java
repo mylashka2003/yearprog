@@ -1,7 +1,7 @@
 package ru.yearprog.File;
 
 import ru.yearprog.Main;
-import ru.yearprog.startWindow.StartWindow;
+import ru.yearprog.InputSelection;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,7 +10,7 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 public class ContentFile  {
-    public static boolean readFile(File file, StartWindow parentComponent) {
+    public static boolean readFile(File file, InputSelection parentComponent) {
         Scanner fin;
 
         try {

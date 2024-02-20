@@ -1,7 +1,5 @@
 package ru.yearprog;
 
-import ru.yearprog.startWindow.StartWindow;
-
 import javax.swing.*;
 import java.awt.*;
 
@@ -11,7 +9,7 @@ public class Main {
     public static Font BigFont = new Font("Liberation Mono", Font.BOLD, 30);
 
     public static void main(String[] args) {
-        StartWindow window = new StartWindow();
+        new InputSelection();
     }
 
     public static void setRelativeSize(double startX, double startY, double sizeX, double sizeY,

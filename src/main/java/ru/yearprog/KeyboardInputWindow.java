@@ -1,4 +1,4 @@
-package ru.yearprog.selectionWindows;
+package ru.yearprog;
 
 import ru.yearprog.Main;
 
