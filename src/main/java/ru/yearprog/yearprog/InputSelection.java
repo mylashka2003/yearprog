@@ -1,6 +1,6 @@
-package ru.yearprog;
+package ru.yearprog.yearprog;
 
-import ru.yearprog.File.ContentFile;
+import ru.yearprog.yearprog.File.ContentFile;
 
 import javax.swing.*;
 import java.awt.*;

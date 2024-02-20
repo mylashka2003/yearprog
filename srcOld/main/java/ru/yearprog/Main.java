@@ -1,6 +1,6 @@
-package ru.yearprog;
+package ru.yearprog.yearprog;
 
-import ru.yearprog.startWindow.StartWindow;
+import ru.yearprog.yearprog.startWindow.StartWindow;
 
 import javax.swing.*;
 import java.awt.*;

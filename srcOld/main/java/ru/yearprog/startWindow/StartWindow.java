@@ -1,9 +1,9 @@
-package ru.yearprog.startWindow;
+package ru.yearprog.yearprog.startWindow;
 
-import ru.yearprog.File.ContentFile;
-import ru.yearprog.Main;
-import ru.yearprog.selectionWindows.KeyboardInputWindow;
-import ru.yearprog.selectionWindows.MouseInputWindow;
+import ru.yearprog.yearprog.File.ContentFile;
+import ru.yearprog.yearprog.Main;
+import ru.yearprog.yearprog.selectionWindows.KeyboardInputWindow;
+import ru.yearprog.yearprog.selectionWindows.MouseInputWindow;
 
 import javax.swing.*;
 import java.awt.*;

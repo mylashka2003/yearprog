@@ -1,6 +1,6 @@
-package ru.yearprog.selectionWindows;
+package ru.yearprog.yearprog.selectionWindows;
 
-import ru.yearprog.Main;
+import ru.yearprog.yearprog.Main;
 
 import javax.swing.*;
 import java.awt.*;

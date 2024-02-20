@@ -1,7 +1,7 @@
-package ru.yearprog.File;
+package ru.yearprog.yearprog.File;
 
-import ru.yearprog.Main;
-import ru.yearprog.InputSelection;
+import ru.yearprog.yearprog.Main;
+import ru.yearprog.yearprog.InputSelection;
 
 import javax.swing.*;
 import java.awt.*;

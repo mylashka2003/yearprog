@@ -1,12 +1,9 @@
-package ru.yearprog;
-
-import ru.yearprog.Main;
+package ru.yearprog.yearprog;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.awt.font.LineMetrics;
 
 
 public class KeyboardInputWindow extends JFrame {
