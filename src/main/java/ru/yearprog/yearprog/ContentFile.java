@@ -1,4 +1,4 @@
-package ru.yearprog.yearprog.File;
+package ru.yearprog.yearprog;
 
 import ru.yearprog.yearprog.Main;
 import ru.yearprog.yearprog.InputSelection;

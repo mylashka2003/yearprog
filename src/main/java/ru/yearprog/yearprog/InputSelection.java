@@ -1,7 +1,5 @@
 package ru.yearprog.yearprog;
 
-import ru.yearprog.yearprog.File.ContentFile;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;

@@ -17,4 +17,9 @@ public class Main {
         component.setBounds((int) (parentComponent.getWidth() * startX), (int) (parentComponent.getHeight() * startY),
                 (int) (parentComponent.getWidth() * sizeX), (int) (parentComponent.getHeight() * sizeY));
     }
+
+    public static void movePoint(Point point) {
+        point.x = 500 + point.x;
+        point.y = 500 - point.y;
+    }
 }

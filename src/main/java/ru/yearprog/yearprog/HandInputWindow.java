@@ -1,13 +1,13 @@
 package ru.yearprog.yearprog;
 
-import ru.yearprog.yearprog.File.ContentFile;
-
 import javax.swing.*;
 import java.awt.*;
-import java.nio.file.attribute.UserPrincipal;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.Arrays;
 
 public class HandInputWindow extends JFrame {
-    private final DrawPanel panel;
+    public static DrawPanel panel;
 
     public HandInputWindow() {
         super("Hand Input");
@@ -23,89 +23,85 @@ public class HandInputWindow extends JFrame {
         this.setResizable(false);
     }
 
-    class DrawPanel extends JPanel {
+    static class DrawPanel extends JPanel implements MouseListener {
         public DrawPanel() {
             super(true);
             this.setPreferredSize(new Dimension(1000, 1000));
+            this.addMouseListener(this);
         }
 
         @Override
         public void paint(Graphics g) {
             super.paint(g);
             drawCoordinatePlane(g);
+
+            for (int i = 0; i < Main.indexOf; i++) {
+                drawPoint(Color.BLACK, Main.points[i], g);
+            }
+        }
+
+        public void drawPoint(Color color, Point point, Graphics g) {
+            g.setColor(color);
+            g.fillOval(point.x - 3, point.y - 3, 6, 6);
+            g.setColor(Color.BLACK);
+            g.drawOval(point.x - 3, point.y - 3, 6, 6);
         }
 
         private void drawCoordinatePlane(Graphics g) {
-            g.drawLine(0, panel.getHeight() / 2, panel.getWidth(), panel.getHeight() / 2);
-            g.drawLine(panel.getWidth() / 2, 0, panel.getWidth() / 2, panel.getHeight());
+            g.drawLine(0, this.getHeight() / 2, this.getWidth(), this.getHeight() / 2);
+            g.drawLine(this.getWidth() / 2, 0, this.getWidth() / 2, this.getHeight());
 
-            g.drawLine(panel.getWidth(), panel.getHeight() / 2, panel.getWidth() - 5, panel.getHeight() / 2 - 5);
-            g.drawLine(panel.getWidth(), panel.getHeight() / 2, panel.getWidth() - 5, panel.getHeight() / 2 + 5);
+            g.drawLine(this.getWidth(), this.getHeight() / 2, this.getWidth() - 5, this.getHeight() / 2 - 5);
+            g.drawLine(this.getWidth(), this.getHeight() / 2, this.getWidth() - 5, this.getHeight() / 2 + 5);
 
-            g.drawLine(panel.getWidth() / 2, 0, panel.getWidth() / 2 - 5, 5);
-            g.drawLine(panel.getWidth() / 2, 0, panel.getWidth() / 2 + 5, 5);
+            g.drawLine(this.getWidth() / 2, 0, this.getWidth() / 2 - 5, 5);
+            g.drawLine(this.getWidth() / 2, 0, this.getWidth() / 2 + 5, 5);
 
             for (int i = 50; i < 1000; i += 50) {
-                g.drawLine(i, panel.getHeight() / 2 - 3, i, panel.getHeight() / 2 + 3);
-                g.drawString(String.valueOf(i - panel.getWidth() / 2), i - 10, panel.getHeight() / 2 + 15);
+                g.drawLine(i, this.getHeight() / 2 - 3, i, this.getHeight() / 2 + 3);
+                g.drawString(String.valueOf(i - this.getWidth() / 2), i - 10, this.getHeight() / 2 + 15);
 
-                if (i != panel.getHeight() / 2) {
-                    g.drawLine(panel.getWidth() / 2 - 3, i, panel.getWidth() / 2 + 3, i);
-                    g.drawString(String.valueOf(i - panel.getHeight() / 2), panel.getWidth() / 2 - 30, panel.getHeight() - i + 5);
+                if (i != this.getHeight() / 2) {
+                    g.drawLine(this.getWidth() / 2 - 3, i, this.getWidth() / 2 + 3, i);
+                    g.drawString(String.valueOf(i - this.getHeight() / 2), this.getWidth() / 2 - 30, this.getHeight() - i + 5);
                 }
             }
         }
-    }
 
-    class KeyboardInput extends JFrame {
-        private final JButton next;
-        private final JButton finish;
-        private final JLabel xLabel;
-        private final JLabel yLabel;
-        private final JSpinner xSpinner;
-        private final JSpinner ySpinner;
-        private final JPanel panel;
-        public KeyboardInput() {
-            super("Keyboard Input");
-            this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-            this.setBounds(1000, 100, 300, 200);
-            this.setResizable(false);
+        @Override
+        public void mouseClicked(MouseEvent e) {
 
-            panel = new JPanel(true);
-            this.add(panel);
-            panel.setLayout(null);
+        }
 
-            next = new JButton("Next");
-            next.setBounds(0, (int) (this.getHeight() * 0.66), (int) (this.getWidth() * 0.3), (int) (this.getHeight() * 0.15));
-            finish = new JButton("Finish!");
-            finish.setBounds((int) (this.getWidth() * 0.35), (int) (this.getHeight() * 0.66), (int) (this.getWidth() * 0.3), (int) (this.getHeight() * 0.15));
+        @Override
+        public void mousePressed(MouseEvent e) {
+            int x = e.getX();
+            int y = e.getY();
 
-            SpinnerModel modelX = new SpinnerNumberModel(10, -500, 500, 1);
-            SpinnerModel modelY = new SpinnerNumberModel(10, -500, 500, 1);
-            xSpinner = new JSpinner(modelX);
-            xSpinner.setBounds((int) (this.getWidth() * 0.45), 0, (int) (this.getWidth() * 0.45), (int) (this.getHeight() * 0.33));
-            ySpinner = new JSpinner(modelY);
-            ySpinner.setBounds((int) (this.getWidth() * 0.45), (int) (this.getHeight() * 0.33), (int) (this.getWidth() * 0.45), (int) (this.getHeight() * 0.3));
+            Point p = new Point(x, y);
+            if (Arrays.asList(Main.points).contains(p)) {
+                JOptionPane.showMessageDialog(this, "Repeated point!", "Error!", JOptionPane.ERROR_MESSAGE);
+            } else {
+                Main.points[Main.indexOf] = p;
+                Main.indexOf++;
+            }
+            this.repaint();
+        }
 
-            Font labelFont = new Font("Liberation Mono", Font.BOLD, 15);
-            xLabel = new JLabel("x coord: ");
-            xLabel.setFont(labelFont);
-            xLabel.setBounds((int) (this.getWidth() * 0.1), 0, (int) (this.getWidth() * 0.45), (int) (this.getHeight() * 0.33));
-            yLabel = new JLabel("y coord: ");
-            yLabel.setFont(labelFont);
-            yLabel.setBounds((int) (this.getWidth() * 0.1), (int) (this.getHeight() * 0.33), (int) (this.getWidth() * 0.45), (int) (this.getHeight() * 0.3));
+        @Override
+        public void mouseReleased(MouseEvent e) {
 
-            panel.add(next);
-            panel.add(finish);
-            panel.add(xSpinner);
-            panel.add(ySpinner);
-            panel.add(xLabel);
-            panel.add(yLabel);
+        }
 
-            next.addActionListener(e -> {
-            });
+        @Override
+        public void mouseEntered(MouseEvent e) {
 
-            this.setVisible(true);
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+
         }
     }
+
 }
