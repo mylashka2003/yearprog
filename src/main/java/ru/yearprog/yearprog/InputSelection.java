@@ -19,11 +19,11 @@ public class InputSelection extends JFrame {
         this.add(panel);
         panel.setLayout(null);
 
+        Font BigFont = new Font("Liberation Mono", Font.BOLD, 30);
         fileButton = new JButton("File Input");
-        fileButton.setFont(Main.BigFont);
-
         handInputButton = new JButton("Hand Input");
-        handInputButton.setFont(Main.BigFont);
+        fileButton.setFont(BigFont);
+        handInputButton.setFont(BigFont);
 
         panel.add(fileButton);
         panel.add(handInputButton);

@@ -51,7 +51,7 @@ class KeyboardInput extends JFrame {
             modelY.setValue(0);
 
             Point p = new Point(x, y);
-            Main.movePoint(p);
+            movePoint(p);
             if (Arrays.asList(Main.points).contains(p)) {
                 JOptionPane.showMessageDialog(this, "Repeated point!", "Error!", JOptionPane.ERROR_MESSAGE);
             } else {
@@ -70,5 +70,10 @@ class KeyboardInput extends JFrame {
         });
 
         this.setVisible(true);
+    }
+
+    public static void movePoint(Point point) {
+        point.x = 500 + point.x;
+        point.y = 500 - point.y;
     }
 }

@@ -32,6 +32,11 @@ public class ContentFile  {
                 try {
                     int x = Integer.parseInt(sd[0]);
                     int y = Integer.parseInt(sd[1]);
+                    Point p = new Point(x ,y);
+                    if (Math.abs(p.x) > 500 || Math.abs(p.y) > 500) {
+                        JOptionPane.showMessageDialog(parentComponent, "Некорректная точка в файле!", "Error!", JOptionPane.ERROR_MESSAGE);
+                        return false;
+                    }
                     pointsCur[index] = new Point(x, y);
                     index++;
                 } catch (NumberFormatException e) {
