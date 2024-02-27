@@ -16,14 +16,17 @@ class KeyboardInput extends JFrame {
         this.setResizable(false);
         this.pack();
         panel.setLayout(null);
+        //panel.setBackground(new Color(187, 208, 255));
 
         JButton next = new JButton("Next");
         JButton finish = new JButton("Finish!");
 
         Main.setRelativeSize(0, 0.5, 0.5, 0.25, next, panel);
-        next.setBackground(new Color(175, 77, 146));
-        next.setBorderPainted(false);
+        //next.setBackground(new Color(200, 182, 255));
+        //next.setBorderPainted(false);
         Main.setRelativeSize(0.5, 0.5, 0.5, 0.25, finish, panel);
+        //finish.setBackground(new Color(200, 182, 255));
+        //finish.setBorderPainted(false);
 
         SpinnerModel modelX = new SpinnerNumberModel(0, -500, 500, 1);
         SpinnerModel modelY = new SpinnerNumberModel(0, -500, 500, 1);
@@ -31,19 +34,39 @@ class KeyboardInput extends JFrame {
         JSpinner ySpinner = new JSpinner(modelY);
 
         Main.setRelativeSize(0.5, 0, 0.5, 0.25, xSpinner, panel);
+        /* Component c = xSpinner.getEditor().getComponent(0);
+        c.setBackground(new Color(187, 208, 255));
+        c = xSpinner.getComponent(0);
+        c.setBackground(new Color(255, 214, 255));
+        c = xSpinner.getComponent(1);
+        c.setBackground(new Color(255, 214, 255));
+        xSpinner.setBorder(null); */
         Main.setRelativeSize(0.5, 0.25, 0.5, 0.25, ySpinner, panel);
+        /* ySpinner.setBackground(new Color(187, 208, 255));
+        c = ySpinner.getEditor().getComponent(0);
+        c.setBackground(new Color(187, 208, 255));
+        c = ySpinner.getComponent(0);
+        c.setBackground(new Color(255, 214, 255));
+        c = ySpinner.getComponent(1);
+        c.setBackground(new Color(255, 214, 255));
+        ySpinner.setBorder(null); */
 
         Font labelFont = new Font("Liberation Mono", Font.BOLD, 25);
         JLabel xLabel = new JLabel("x coord: ");
         JLabel yLabel = new JLabel("y coord: ");
         xLabel.setFont(labelFont);
         yLabel.setFont(labelFont);
+        next.setFont(labelFont);
+        finish.setFont(labelFont);
+        xSpinner.setFont(labelFont);
+        ySpinner.setFont(labelFont);
 
         Main.setRelativeSize(0.05, 0, 0.45, 0.25, xLabel, panel);
         Main.setRelativeSize(0.05, 0.25, 0.45, 0.25, yLabel, panel);
 
         JCheckBox coordinatePlane = new JCheckBox("Toggle coordinate plane");
         Main.setRelativeSize(0.23, 0.77, 0.75, 0.2, coordinatePlane, panel);
+        //coordinatePlane.setBackground(new Color(187, 208, 255));
 
         panel.add(next);
         panel.add(finish);
@@ -79,7 +102,9 @@ class KeyboardInput extends JFrame {
             if (Main.indexOf < 4) {
                 JOptionPane.showMessageDialog(this, "Not enough points!", "Error!", JOptionPane.ERROR_MESSAGE);
             } else {
-
+                this.dispose();
+                InputSelection.handInputWindow.dispose();
+                new DrawingCycle();
             }
         });
 

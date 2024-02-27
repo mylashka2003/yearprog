@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.event.*;
 
 public class InputSelection extends JFrame {
+    public static HandInputWindow handInputWindow;
     private final JPanel panel;
     private final JButton fileButton;
     private final JButton handInputButton;
@@ -42,7 +43,7 @@ public class InputSelection extends JFrame {
         });
 
         handInputButton.addActionListener(e -> {
-            new HandInputWindow();
+            handInputWindow = new HandInputWindow();
             this.dispose();
         });
 

@@ -63,10 +63,6 @@ public class Line {
         }
     }
 
-    public static double areaTriangle(Point point1, Point point2, Point point3) {
-        return 0.5 * Math.abs(point1.x * (point2.y - point3.y) + point2.x * (point3.y - point1.y) + point3.x * (point1.y - point2.y));
-    }
-
     public static boolean selfIntersection(Point a, Point b, Point c, Point d) {
         Line ab = new Line(a, b);
         Line bc = new Line(b, c);
@@ -76,12 +72,16 @@ public class Line {
         Point int1 = ab.intersection(cd);
         Point int2 = ad.intersection(bc);
         if (int1 != null) {
-            if (isBetween(a.x, b.x, int1.x) && isBetween(a.y, b.y, int1.y) && isBetween(c.x, d.x, int1.x) && isBetween(c.y, d.y, int1.y)) return true;
+            if (pointIsBetween(a, b, int1) && pointIsBetween(c, d, int1)) return true;
         }
         if (int2 != null) {
-            return isBetween(a.x, d.x, int2.x) && isBetween(a.y, d.y, int2.y) && isBetween(b.x, c.x, int2.x) && isBetween(b.y, c.y, int2.y);
+            return pointIsBetween(a, d, int2) && pointIsBetween(b, c, int2);
         }
         return false;
+    }
+
+    public static boolean pointIsBetween(Point a, Point b, Point q) {
+        return isBetween(a.x, b.x, q.x) && isBetween(a.y, b.y, q.y);
     }
 
     public static boolean isBetween(int a, int b, int numToCheck) {
