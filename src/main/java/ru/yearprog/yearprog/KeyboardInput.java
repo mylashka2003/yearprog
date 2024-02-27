@@ -19,23 +19,31 @@ class KeyboardInput extends JFrame {
 
         JButton next = new JButton("Next");
         JButton finish = new JButton("Finish!");
-        Main.setRelativeSize(0, 0.66, 0.5, 0.34, next, panel);
-        Main.setRelativeSize(0.5, 0.66, 0.5, 0.34, finish, panel);
+
+        Main.setRelativeSize(0, 0.5, 0.5, 0.25, next, panel);
+        next.setBackground(new Color(175, 77, 146));
+        next.setBorderPainted(false);
+        Main.setRelativeSize(0.5, 0.5, 0.5, 0.25, finish, panel);
 
         SpinnerModel modelX = new SpinnerNumberModel(0, -500, 500, 1);
         SpinnerModel modelY = new SpinnerNumberModel(0, -500, 500, 1);
         JSpinner xSpinner = new JSpinner(modelX);
         JSpinner ySpinner = new JSpinner(modelY);
-        Main.setRelativeSize(0.5, 0, 0.5, 0.33, xSpinner, panel);
-        Main.setRelativeSize(0.5, 0.33, 0.5, 0.33, ySpinner, panel);
+
+        Main.setRelativeSize(0.5, 0, 0.5, 0.25, xSpinner, panel);
+        Main.setRelativeSize(0.5, 0.25, 0.5, 0.25, ySpinner, panel);
 
         Font labelFont = new Font("Liberation Mono", Font.BOLD, 25);
         JLabel xLabel = new JLabel("x coord: ");
         JLabel yLabel = new JLabel("y coord: ");
         xLabel.setFont(labelFont);
         yLabel.setFont(labelFont);
-        Main.setRelativeSize(0.05, 0, 0.45, 0.33, xLabel, panel);
-        Main.setRelativeSize(0.05, 0.33, 0.45, 0.33, yLabel, panel);
+
+        Main.setRelativeSize(0.05, 0, 0.45, 0.25, xLabel, panel);
+        Main.setRelativeSize(0.05, 0.25, 0.45, 0.25, yLabel, panel);
+
+        JCheckBox coordinatePlane = new JCheckBox("Toggle coordinate plane");
+        Main.setRelativeSize(0.23, 0.77, 0.75, 0.2, coordinatePlane, panel);
 
         panel.add(next);
         panel.add(finish);
@@ -43,6 +51,12 @@ class KeyboardInput extends JFrame {
         panel.add(ySpinner);
         panel.add(xLabel);
         panel.add(yLabel);
+        panel.add(coordinatePlane);
+
+        coordinatePlane.addActionListener(e -> {
+            HandInputWindow.drawCoordinatePlane = coordinatePlane.isSelected();
+            HandInputWindow.panel.repaint();
+        });
 
         next.addActionListener(e -> {
             int x = (int) modelX.getValue();
