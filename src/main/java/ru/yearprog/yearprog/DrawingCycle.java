@@ -13,7 +13,6 @@ public class DrawingCycle extends JFrame {
         this.add(panel);
         this.pack();
         panel.setLayout(null);
-svo
         this.setVisible(true);
         this.setResizable(false);
     }
