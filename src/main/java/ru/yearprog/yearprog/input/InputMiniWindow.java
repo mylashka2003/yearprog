@@ -1,12 +1,15 @@
-package ru.yearprog.yearprog;
+package ru.yearprog.yearprog.input;
+
+import ru.yearprog.yearprog.DrawingCycle;
+import ru.yearprog.yearprog.Main;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.Arrays;
 
-class KeyboardInput extends JFrame {
-    public KeyboardInput() {
-        super("Keyboard Input");
+class InputMiniWindow extends JFrame {
+    public InputMiniWindow() {
+        super("Input");
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setBounds(1200, 500, 0, 0);
 
@@ -16,17 +19,13 @@ class KeyboardInput extends JFrame {
         this.setResizable(false);
         this.pack();
         panel.setLayout(null);
-        //panel.setBackground(new Color(187, 208, 255));
 
         JButton next = new JButton("Next");
         JButton finish = new JButton("Finish!");
 
         Main.setRelativeSize(0, 0.5, 0.5, 0.25, next, panel);
-        //next.setBackground(new Color(200, 182, 255));
-        //next.setBorderPainted(false);
         Main.setRelativeSize(0.5, 0.5, 0.5, 0.25, finish, panel);
-        //finish.setBackground(new Color(200, 182, 255));
-        //finish.setBorderPainted(false);
+
 
         SpinnerModel modelX = new SpinnerNumberModel(0, -500, 500, 1);
         SpinnerModel modelY = new SpinnerNumberModel(0, -500, 500, 1);
@@ -92,19 +91,23 @@ class KeyboardInput extends JFrame {
             if (Arrays.asList(Main.points).contains(p)) {
                 JOptionPane.showMessageDialog(this, "Repeated point!", "Error!", JOptionPane.ERROR_MESSAGE);
             } else {
-                Main.points[Main.indexOf] = p;
-                Main.indexOf++;
+                Main.points[Main.count] = p;
+                Main.count++;
             }
             HandInputWindow.panel.repaint();
         });
 
         finish.addActionListener(e -> {
-            if (Main.indexOf < 4) {
+            if (Main.count < 4) {
                 JOptionPane.showMessageDialog(this, "Not enough points!", "Error!", JOptionPane.ERROR_MESSAGE);
             } else {
                 this.dispose();
                 InputSelection.handInputWindow.dispose();
-                new DrawingCycle();
+                try {
+                    new DrawingCycle();
+                } catch (InterruptedException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
         });
 

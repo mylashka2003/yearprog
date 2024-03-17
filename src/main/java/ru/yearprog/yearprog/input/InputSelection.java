@@ -1,4 +1,7 @@
-package ru.yearprog.yearprog;
+package ru.yearprog.yearprog.input;
+
+import ru.yearprog.yearprog.DrawingCycle;
+import ru.yearprog.yearprog.Main;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,7 +14,7 @@ public class InputSelection extends JFrame {
     private final JButton handInputButton;
 
     public InputSelection() {
-        super("Выбор способа ввода");
+        super("Input Selection");
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setMinimumSize(new Dimension(800, 600));
         this.setBounds(10, 10, 1100, 600);
@@ -34,10 +37,14 @@ public class InputSelection extends JFrame {
 
             fileChooser.setDialogTitle("Choose file");
             if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-                boolean res = ContentFile.readFile(fileChooser.getSelectedFile(), this);
+                boolean res = GetFromFile.readFile(fileChooser.getSelectedFile(), this);
 
                 if (res) {
-                    // open final window
+                    try {
+                        new DrawingCycle();
+                    } catch (InterruptedException ex) {
+                        throw new RuntimeException(ex);
+                    }
                 }
             }
         });

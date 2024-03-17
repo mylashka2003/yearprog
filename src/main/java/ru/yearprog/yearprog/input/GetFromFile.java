@@ -1,4 +1,6 @@
-package ru.yearprog.yearprog;
+package ru.yearprog.yearprog.input;
+
+import ru.yearprog.yearprog.Main;
 
 import javax.swing.*;
 import java.awt.*;
@@ -6,7 +8,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
-public class ContentFile  {
+public class GetFromFile {
     public static boolean readFile(File file, InputSelection parentComponent) {
         Scanner fin;
 
@@ -49,8 +51,9 @@ public class ContentFile  {
                 JOptionPane.showMessageDialog(parentComponent, "Введено слишком мало точек!", "Error!", JOptionPane.ERROR_MESSAGE);
             }
 
+            // Запись в основной массив
             Main.points = pointsCur;
-            Main.indexOf = index - 1;
+            Main.count = index - 1;
 
             fin.close();
             parentComponent.dispose();
