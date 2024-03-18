@@ -1,6 +1,6 @@
 package ru.yearprog.yearprog.input;
 
-import ru.yearprog.yearprog.DrawingCycle;
+import ru.yearprog.yearprog.result.DrawingCycle;
 import ru.yearprog.yearprog.Main;
 
 import javax.swing.*;

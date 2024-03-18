@@ -1,15 +1,15 @@
-package ru.yearprog.yearprog;
+package ru.yearprog.yearprog.result;
 
+import ru.yearprog.yearprog.Main;
 import ru.yearprog.yearprog.geometry.Geometry;
 import ru.yearprog.yearprog.geometry.QuadrilateralResult;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class DrawingCycle extends JFrame {
     public static QuadrilateralResult[] quadrilateralResults;
+    public static int index = 0;
     public static QuadrilateralResult quadrilateralResult;
     public DrawingCycle() throws InterruptedException {
         super("Result");
@@ -23,6 +23,7 @@ public class DrawingCycle extends JFrame {
         this.setResizable(false);
 
         generateRs(Main.points, Main.count);
+        new QuadrilateralInfo();
         draw(panel);
     }
 
@@ -55,17 +56,14 @@ public class DrawingCycle extends JFrame {
     }
 
     public static void draw(JPanel panel) {
-        Timer timer = new Timer(500, new ActionListener() {
-            private int index = 0;
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (index < quadrilateralResults.length) {
-                    quadrilateralResult = quadrilateralResults[index];
-                    panel.repaint();
-                    index++;
-                } else {
-                    ((Timer)e.getSource()).stop();
-                }
+        Timer timer = new Timer(500, e -> {
+            if (index < quadrilateralResults.length) {
+                quadrilateralResult = quadrilateralResults[index];
+                panel.repaint();
+                QuadrilateralInfo.updateTable(quadrilateralResult);
+                index++;
+            } else {
+                ((Timer)e.getSource()).stop();
             }
         });
         timer.setInitialDelay(0);

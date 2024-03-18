@@ -40,7 +40,6 @@ public class HandInputWindow extends JFrame {
 
             for (int i = 0; i < Main.count; i++) {
                 drawPoint(Color.BLACK, Main.points[i], g);
-                System.out.println(this.getWidth() + " " + this.getHeight());
             }
         }
 

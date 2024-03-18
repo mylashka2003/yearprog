@@ -1,6 +1,6 @@
 package ru.yearprog.yearprog.input;
 
-import ru.yearprog.yearprog.DrawingCycle;
+import ru.yearprog.yearprog.result.DrawingCycle;
 import ru.yearprog.yearprog.Main;
 
 import javax.swing.*;
@@ -33,22 +33,7 @@ class InputMiniWindow extends JFrame {
         JSpinner ySpinner = new JSpinner(modelY);
 
         Main.setRelativeSize(0.5, 0, 0.5, 0.25, xSpinner, panel);
-        /* Component c = xSpinner.getEditor().getComponent(0);
-        c.setBackground(new Color(187, 208, 255));
-        c = xSpinner.getComponent(0);
-        c.setBackground(new Color(255, 214, 255));
-        c = xSpinner.getComponent(1);
-        c.setBackground(new Color(255, 214, 255));
-        xSpinner.setBorder(null); */
         Main.setRelativeSize(0.5, 0.25, 0.5, 0.25, ySpinner, panel);
-        /* ySpinner.setBackground(new Color(187, 208, 255));
-        c = ySpinner.getEditor().getComponent(0);
-        c.setBackground(new Color(187, 208, 255));
-        c = ySpinner.getComponent(0);
-        c.setBackground(new Color(255, 214, 255));
-        c = ySpinner.getComponent(1);
-        c.setBackground(new Color(255, 214, 255));
-        ySpinner.setBorder(null); */
 
         Font labelFont = new Font("Liberation Mono", Font.BOLD, 25);
         JLabel xLabel = new JLabel("x coord: ");
@@ -65,7 +50,6 @@ class InputMiniWindow extends JFrame {
 
         JCheckBox coordinatePlane = new JCheckBox("Toggle coordinate plane");
         Main.setRelativeSize(0.23, 0.77, 0.75, 0.2, coordinatePlane, panel);
-        //coordinatePlane.setBackground(new Color(187, 208, 255));
 
         panel.add(next);
         panel.add(finish);
@@ -115,7 +99,7 @@ class InputMiniWindow extends JFrame {
     }
 
     public static void movePoint(Point point) {
-        point.x = 500 + point.x;
-        point.y = 500 - point.y;
+        point.x = Main.fieldSize / 2 + point.x;
+        point.y = Main.fieldSize / 2 - point.y;
     }
 }
