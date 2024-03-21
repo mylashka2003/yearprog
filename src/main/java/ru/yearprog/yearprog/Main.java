@@ -1,17 +1,21 @@
 package ru.yearprog.yearprog;
 
-import ru.yearprog.yearprog.input.InputSelection;
-
 import javax.swing.*;
 import java.awt.*;
 
 public class Main {
     public static Point[] points = new Point[1000];
-    public static int count = 0;
+    public static int countOfPoints = 0;
     public static final int fieldSize = 700;
+    public static ClassicFrame f;
 
     public static void main(String[] args) {
-        new InputSelection();
+        f = new ClassicFrame();
+    }
+
+    public static void addPoint(Point p) {
+        points[countOfPoints] = p;
+        countOfPoints++;
     }
 
     public static void setRelativeSize(double startX, double startY, double sizeX, double sizeY,

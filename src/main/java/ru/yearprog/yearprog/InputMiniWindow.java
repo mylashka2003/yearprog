@@ -1,7 +1,6 @@
-package ru.yearprog.yearprog.input;
+package ru.yearprog.yearprog;
 
 import ru.yearprog.yearprog.result.DrawingCycle;
-import ru.yearprog.yearprog.Main;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,8 +9,6 @@ import java.util.Arrays;
 class InputMiniWindow extends JFrame {
     public InputMiniWindow() {
         super("Input");
-        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        this.setBounds(1200, 500, 0, 0);
 
         JPanel panel = new JPanel(true);
         panel.setPreferredSize(new Dimension(300, 200));
@@ -25,7 +22,6 @@ class InputMiniWindow extends JFrame {
 
         Main.setRelativeSize(0, 0.5, 0.5, 0.25, next, panel);
         Main.setRelativeSize(0.5, 0.5, 0.5, 0.25, finish, panel);
-
 
         SpinnerModel modelX = new SpinnerNumberModel(0, -500, 500, 1);
         SpinnerModel modelY = new SpinnerNumberModel(0, -500, 500, 1);
@@ -48,21 +44,12 @@ class InputMiniWindow extends JFrame {
         Main.setRelativeSize(0.05, 0, 0.45, 0.25, xLabel, panel);
         Main.setRelativeSize(0.05, 0.25, 0.45, 0.25, yLabel, panel);
 
-        JCheckBox coordinatePlane = new JCheckBox("Toggle coordinate plane");
-        Main.setRelativeSize(0.23, 0.77, 0.75, 0.2, coordinatePlane, panel);
-
         panel.add(next);
         panel.add(finish);
         panel.add(xSpinner);
         panel.add(ySpinner);
         panel.add(xLabel);
         panel.add(yLabel);
-        panel.add(coordinatePlane);
-
-        coordinatePlane.addActionListener(e -> {
-            HandInputWindow.drawCoordinatePlane = coordinatePlane.isSelected();
-            HandInputWindow.panel.repaint();
-        });
 
         next.addActionListener(e -> {
             int x = (int) modelX.getValue();
@@ -75,18 +62,18 @@ class InputMiniWindow extends JFrame {
             if (Arrays.asList(Main.points).contains(p)) {
                 JOptionPane.showMessageDialog(this, "Repeated point!", "Error!", JOptionPane.ERROR_MESSAGE);
             } else {
-                Main.points[Main.count] = p;
-                Main.count++;
+                Main.points[Main.countOfPoints] = p;
+                Main.countOfPoints++;
             }
-            HandInputWindow.panel.repaint();
+            ClassicFrame.panel.repaint();
         });
 
         finish.addActionListener(e -> {
-            if (Main.count < 4) {
+            if (Main.countOfPoints < 4) {
                 JOptionPane.showMessageDialog(this, "Not enough points!", "Error!", JOptionPane.ERROR_MESSAGE);
             } else {
                 this.dispose();
-                InputSelection.handInputWindow.dispose();
+                Main.f.dispose();
                 try {
                     new DrawingCycle();
                 } catch (InterruptedException ex) {

@@ -1,15 +1,18 @@
 package ru.yearprog.yearprog.result;
 
 import ru.yearprog.yearprog.Main;
-import ru.yearprog.yearprog.geometry.Geometry;
-import ru.yearprog.yearprog.geometry.QuadrilateralResult;
+import ru.yearprog.yearprog.Geometry;
+import ru.yearprog.yearprog.QuadrilateralResult;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class DrawingCycle extends JFrame {
     public static QuadrilateralResult[] quadrilateralResults;
-    public static int index = 0;
+    public static int index;
     public static QuadrilateralResult quadrilateralResult;
     public DrawingCycle() throws InterruptedException {
         super("Result");
@@ -22,9 +25,18 @@ public class DrawingCycle extends JFrame {
         this.setVisible(true);
         this.setResizable(false);
 
-        generateRs(Main.points, Main.count);
+        generateRs(Main.points, Main.countOfPoints);
         new QuadrilateralInfo();
-        draw(panel);
+        quadrilateralResults = sortR(quadrilateralResults);
+
+        int length = Math.min(10, quadrilateralResults.length);
+        QuadrilateralResult[] top10 = new QuadrilateralResult[length];
+        System.arraycopy(quadrilateralResults, 0, top10, 0, length);
+        java.util.List<QuadrilateralResult> tops = Arrays.asList(top10);
+        Collections.reverse(tops);
+        top10 = tops.toArray(new QuadrilateralResult[0]);
+
+        draw(panel, top10);
     }
 
     public static int binomialCoefficient(int n, int k) {
@@ -55,10 +67,11 @@ public class DrawingCycle extends JFrame {
         }
     }
 
-    public static void draw(JPanel panel) {
-        Timer timer = new Timer(500, e -> {
-            if (index < quadrilateralResults.length) {
-                quadrilateralResult = quadrilateralResults[index];
+    public static void draw(JPanel panel, QuadrilateralResult[] top) {
+        index = 0;
+        Timer timer = new Timer(1000, e -> {
+            if (index < top.length) {
+                quadrilateralResult = top[index];
                 panel.repaint();
                 QuadrilateralInfo.updateTable(quadrilateralResult);
                 index++;
@@ -68,6 +81,14 @@ public class DrawingCycle extends JFrame {
         });
         timer.setInitialDelay(0);
         timer.start();
+    }
+
+    public static QuadrilateralResult[] sortR(QuadrilateralResult[] rs) {
+        java.util.List<QuadrilateralResult> rs1 = Arrays.asList(rs);
+
+        rs1.sort(Comparator.comparingDouble(a -> a.area));
+        Collections.reverse(rs1);
+        return rs1.toArray(new QuadrilateralResult[0]);
     }
 
     static class DrawCyclePanel extends JPanel {
@@ -86,7 +107,7 @@ public class DrawingCycle extends JFrame {
         }
 
         public void drawAllPoints(Graphics g) {
-            for (int i = 0; i < Main.count; i++) {
+            for (int i = 0; i < Main.countOfPoints; i++) {
                 Main.drawPoint(Color.BLACK, Main.points[i], g);
             }
         }

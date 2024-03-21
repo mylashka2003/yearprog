@@ -1,6 +1,6 @@
 package ru.yearprog.yearprog.result;
 
-import ru.yearprog.yearprog.geometry.QuadrilateralResult;
+import ru.yearprog.yearprog.QuadrilateralResult;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -8,19 +8,12 @@ import java.awt.*;
 
 public class QuadrilateralInfo extends JFrame {
     public static DefaultTableModel model;
-    //public static JPanel panel;
+    public static JLabel label;
 
     public QuadrilateralInfo() {
         super("Info");
         SwingUtilities.invokeLater(() -> {
             this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-            //this.setBounds(1200, 500, 0, 0);
-
-
-            //panel = new JPanel(true);
-            //panel.setPreferredSize(new Dimension(500, 500));
-            //this.add(panel);
-            //panel.setLayout(null);
 
             Font labelFont = new Font("Liberation Mono", Font.BOLD, 25);
 
@@ -28,20 +21,29 @@ public class QuadrilateralInfo extends JFrame {
 
             model = new DefaultTableModel(columnNames, 0);
 
-            JTable table = new JTable(model);
-            JScrollPane scrollPane = new JScrollPane(table);
-            this.getContentPane().add(scrollPane);
-            this.pack();
-
-            model.setRowCount(0);
+            model.setRowCount(4);
             model.addRow(new Object[]{1, DrawingCycle.quadrilateralResults[0].points[0].x, DrawingCycle.quadrilateralResults[0].points[0].y});
             model.addRow(new Object[]{2, DrawingCycle.quadrilateralResults[0].points[1].x, DrawingCycle.quadrilateralResults[0].points[1].y});
             model.addRow(new Object[]{3, DrawingCycle.quadrilateralResults[0].points[2].x, DrawingCycle.quadrilateralResults[0].points[2].y});
             model.addRow(new Object[]{4, DrawingCycle.quadrilateralResults[0].points[3].x, DrawingCycle.quadrilateralResults[0].points[3].y});
 
-            //panel.add(table);
+            JTable table = new JTable(model);
+            String text = "area: " + DrawingCycle.quadrilateralResults[0].area;
+            label = new JLabel(text);
+            label.setFont(labelFont);
+
+            JPanel panel = new JPanel(true);
+            panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS)); // Вертикальное расположение компонентов
+
+            // Добавляем компоненты в панель
+            panel.add(new JScrollPane(table));
+            panel.add(label);
+
+            // Добавляем панель в окно
+            this.add(panel);
+
+            this.setBounds(0,0, 500, 500);
             this.setResizable(false);
-            //this.pack();
             this.setVisible(true);
         });
     }
@@ -52,6 +54,7 @@ public class QuadrilateralInfo extends JFrame {
         model.addRow(new Object[]{2, quadrilateralResult.points[1].x, quadrilateralResult.points[1].y});
         model.addRow(new Object[]{3, quadrilateralResult.points[2].x, quadrilateralResult.points[2].y});
         model.addRow(new Object[]{4, quadrilateralResult.points[3].x, quadrilateralResult.points[3].y});
-        //panel.repaint();
+        String text = "area: " + quadrilateralResult.area;
+        label.setText(text);
     }
 }

@@ -1,4 +1,4 @@
-package ru.yearprog.yearprog.geometry;
+package ru.yearprog.yearprog;
 
 
 import ru.yearprog.yearprog.Main;
@@ -8,10 +8,12 @@ import java.awt.*;
 public class QuadrilateralResult {
     public double area;
     public Point[] points;
+    public String type;
 
-    QuadrilateralResult(double area, Point[] points) {
+    QuadrilateralResult(double area, Point[] points, String type) {
         this.area = area;
         this.points = points;
+        this.type = type;
     }
 
     public void draw(Graphics g) {
