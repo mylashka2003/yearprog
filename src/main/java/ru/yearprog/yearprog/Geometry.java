@@ -20,6 +20,10 @@ public class Geometry {
         return triangleArea(p1, p2, p3) + triangleArea(p1, p3, p4);
     }
 
+    private static double distance(Point a, Point b) {
+        return Math.hypot(a.x - b.x, a.y - b.y);
+    }
+
     // Проверка нахождения точки внутри треугольника
     private static boolean isPointInsideTriangle(Point p, Point p1, Point p2, Point p3) {
         double totalArea = triangleArea(p1, p2, p3);
@@ -47,25 +51,35 @@ public class Geometry {
 
     // Поиск крайних точек на прямой
     private static Point[] findExtremePoints(Point[] points) {
-        Point minPoint = points[0];
-        Point maxPoint = points[1];
+        Point first = points[0];
+        Point second = points[1];
+        Point third = points[2];
 
-        double directionX = maxPoint.x - minPoint.x;
-        double directionY = maxPoint.y - minPoint.y;
+        double distFirstSecond = distance(first, second);
+        double distFirstThird = distance(first, third);
 
-        for (Point point : points) {
-            double paramForMin = (minPoint.x * directionX + minPoint.y * directionY);
-            double paramForMax = (maxPoint.x * directionX + maxPoint.y * directionY);
-            double paramForCurrent = (point.x * directionX + point.y * directionY);
-
-            if (paramForCurrent < paramForMin) {
-                minPoint = point;
-            }
-            if (paramForCurrent > paramForMax) {
-                maxPoint = point;
-            }
+        if (distFirstSecond > distFirstThird) {
+            // Если расстояние между первой и второй точкой больше, чем между первой и третьей,
+            // ...то вторая точка находится дальше всего и она будет последней
+            // Иначе последней будет третья точка
+            points[2] = second;
+            points[1] = third;
+            points[0] = first;
+        } else {
+            points[0] = first;
+            points[1] = second;
+            points[2] = third;
         }
-        return new Point[]{minPoint, maxPoint};
+
+        // Проверяем, не находится ли вторая точка за пределами первой и третьей
+        if (distance(points[0], points[1]) + distance(points[1], points[2]) != distance(points[0], points[2])) {
+            // Если это так, меняем местами первую и третью точки
+            Point temp = points[0];
+            points[0] = points[2];
+            points[2] = temp;
+        }
+
+        return points;
     }
 
     // Поиск средней точки
@@ -108,19 +122,19 @@ public class Geometry {
             // Три точки на одной прямой -> Треугольник
             if (areCollinear(p1, p2, p3)) {
                 Point[] p = findExtremePoints(new Point[]{p1, p2, p3});
-                return new QuadrilateralResult(triangleArea(p[0], p[1], p4), new Point[]{p[0], p[1], p4}, "triangle");
+                return new QuadrilateralResult(triangleArea(p[0], p[2], p4), new Point[]{p[0], p[1], p[2], p4}, "triangle");
             }
             if (areCollinear(p1, p2, p4)) {
                 Point[] p = findExtremePoints(new Point[]{p1, p2, p4});
-                return new QuadrilateralResult(triangleArea(p[0], p[1], p3), new Point[]{p[0], p[1], p3}, "triangle");
+                return new QuadrilateralResult(triangleArea(p[0], p[2], p3), new Point[]{p[0], p[1], p[2], p3}, "triangle");
             }
             if (areCollinear(p1, p3, p4)) {
                 Point[] p = findExtremePoints(new Point[]{p1, p3, p4});
-                return new QuadrilateralResult(triangleArea(p[0], p[1], p2), new Point[]{p[0], p[1], p2}, "triangle");
+                return new QuadrilateralResult(triangleArea(p[0], p[2], p2), new Point[]{p[0], p[1], p[2], p2}, "triangle");
             }
             if (areCollinear(p2, p3, p4)) {
                 Point[] p = findExtremePoints(new Point[]{p2, p3, p4});
-                return new QuadrilateralResult(triangleArea(p[0], p[1], p1), new Point[]{p[0], p[1], p1}, "triangle");
+                return new QuadrilateralResult(triangleArea(p[0], p[2], p1), new Point[]{p[0], p[1], p[2], p1}, "triangle");
             }
         }
 

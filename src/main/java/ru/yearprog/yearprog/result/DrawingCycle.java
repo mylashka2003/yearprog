@@ -8,7 +8,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
 
 public class DrawingCycle extends JFrame {
     public static QuadrilateralResult[] quadrilateralResults;
@@ -16,6 +15,7 @@ public class DrawingCycle extends JFrame {
     public static QuadrilateralResult quadrilateralResult;
     public DrawingCycle() throws InterruptedException {
         super("Result");
+        long t1 = System.currentTimeMillis();
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         DrawCyclePanel panel = new DrawCyclePanel();
@@ -25,9 +25,19 @@ public class DrawingCycle extends JFrame {
         this.setVisible(true);
         this.setResizable(false);
 
+        // 1
+        long startTime = System.currentTimeMillis();
         generateRs(Main.points, Main.countOfPoints);
+        long endTime = System.currentTimeMillis();
+        System.out.println(endTime - startTime);
+
         new QuadrilateralInfo();
-        quadrilateralResults = sortR(quadrilateralResults);
+
+        // 3
+        startTime = System.currentTimeMillis();
+        quickSort(quadrilateralResults, 0, quadrilateralResults.length - 1);
+        endTime = System.currentTimeMillis();
+        System.out.println(endTime - startTime);
 
         int length = Math.min(10, quadrilateralResults.length);
         QuadrilateralResult[] top10 = new QuadrilateralResult[length];
@@ -35,6 +45,10 @@ public class DrawingCycle extends JFrame {
         java.util.List<QuadrilateralResult> tops = Arrays.asList(top10);
         Collections.reverse(tops);
         top10 = tops.toArray(new QuadrilateralResult[0]);
+
+        long t2 = System.currentTimeMillis();
+        System.out.println("------");
+        System.out.println(t2 - t1);
 
         draw(panel, top10);
     }
@@ -83,12 +97,36 @@ public class DrawingCycle extends JFrame {
         timer.start();
     }
 
-    public static QuadrilateralResult[] sortR(QuadrilateralResult[] rs) {
-        java.util.List<QuadrilateralResult> rs1 = Arrays.asList(rs);
+    public static void quickSort(QuadrilateralResult[] shapes, int begin, int end) {
+        if (begin < end) {
+            int partitionIndex = partition(shapes, begin, end);
 
-        rs1.sort(Comparator.comparingDouble(a -> a.area));
-        Collections.reverse(rs1);
-        return rs1.toArray(new QuadrilateralResult[0]);
+            quickSort(shapes, begin, partitionIndex - 1);
+            quickSort(shapes, partitionIndex + 1, end);
+        }
+    }
+
+    private static int partition(QuadrilateralResult[] shapes, int begin, int end) {
+        double pivot = shapes[end].area;
+        int i = (begin - 1);
+
+        for (int j = begin; j < end; j++) {
+            if (shapes[j].area >= pivot) {
+                i++;
+
+                // Меняем местами shapes[i] и shapes[j]
+                QuadrilateralResult swapTemp = shapes[i];
+                shapes[i] = shapes[j];
+                shapes[j] = swapTemp;
+            }
+        }
+
+        // Меняем местами shapes[i + 1] и shapes[end] (или pivot)
+        QuadrilateralResult swapTemp = shapes[i + 1];
+        shapes[i + 1] = shapes[end];
+        shapes[end] = swapTemp;
+
+        return i + 1;
     }
 
     static class DrawCyclePanel extends JPanel {
