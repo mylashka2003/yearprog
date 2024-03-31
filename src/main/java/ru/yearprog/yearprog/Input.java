@@ -71,20 +71,20 @@ public class Input {
                 this.add(panel);
                 this.setResizable(false);
                 this.pack();
-                panel.setLayout(null);
+                panel.setLayout(new GridLayout(1,2));
 
                 Font labelFont = new Font("Liberation Mono", Font.BOLD, 20);
                 JButton input = new JButton("Input");
-                input.setBounds(100, 0, 100, 70);
+                //input.setBounds(100, 0, 100, 70);
                 input.setFont(labelFont);
 
                 SpinnerModel model = new SpinnerNumberModel(1, 1, 100, 1);
                 JSpinner spinner = new JSpinner(model);
-                spinner.setBounds(0, 0, 100, 70);
+                //spinner.setBounds(0, 0, 100, 70);
                 spinner.setFont(labelFont);
 
-                panel.add(input);
                 panel.add(spinner);
+                panel.add(input);
 
                 input.addActionListener(e -> {
                     generateRandomPoints((Integer) spinner.getValue());

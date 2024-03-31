@@ -16,24 +16,26 @@ public class QuadrilateralInfo extends JFrame {
             this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
             Font labelFont = new Font("Liberation Mono", Font.BOLD, 25);
+            Font tableFont = new Font("Liberation Mono", Font.BOLD, 14);
 
             String[] columnNames = {"Point", "x", "y"};
 
             model = new DefaultTableModel(columnNames, 0);
 
             model.setRowCount(4);
-            model.addRow(new Object[]{1, DrawingCycle.quadrilateralResults[0].points[0].x, DrawingCycle.quadrilateralResults[0].points[0].y});
-            model.addRow(new Object[]{2, DrawingCycle.quadrilateralResults[0].points[1].x, DrawingCycle.quadrilateralResults[0].points[1].y});
-            model.addRow(new Object[]{3, DrawingCycle.quadrilateralResults[0].points[2].x, DrawingCycle.quadrilateralResults[0].points[2].y});
-            model.addRow(new Object[]{4, DrawingCycle.quadrilateralResults[0].points[3].x, DrawingCycle.quadrilateralResults[0].points[3].y});
+            model.addRow(new Object[]{1, CountCycle.quadrilateralResults[0].points[0].x, CountCycle.quadrilateralResults[0].points[0].y});
+            model.addRow(new Object[]{2, CountCycle.quadrilateralResults[0].points[1].x, CountCycle.quadrilateralResults[0].points[1].y});
+            model.addRow(new Object[]{3, CountCycle.quadrilateralResults[0].points[2].x, CountCycle.quadrilateralResults[0].points[2].y});
+            model.addRow(new Object[]{4, CountCycle.quadrilateralResults[0].points[3].x, CountCycle.quadrilateralResults[0].points[3].y});
 
             JTable table = new JTable(model);
-            String text = "area: " + DrawingCycle.quadrilateralResults[0].area;
+            table.setFont(tableFont);
+            String text = "area: " + CountCycle.quadrilateralResults[0].area;
             label = new JLabel(text);
             label.setFont(labelFont);
 
             JPanel panel = new JPanel(true);
-            panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS)); // Вертикальное расположение компонентов
+            panel.setLayout(new GridLayout(2, 1)); // Вертикальное расположение компонентов
 
             // Добавляем компоненты в панель
             panel.add(new JScrollPane(table));
@@ -42,7 +44,7 @@ public class QuadrilateralInfo extends JFrame {
             // Добавляем панель в окно
             this.add(panel);
 
-            this.setBounds(0,0, 500, 500);
+            this.setBounds(0,0, 200, 225);
             this.setResizable(false);
             this.setVisible(true);
         });

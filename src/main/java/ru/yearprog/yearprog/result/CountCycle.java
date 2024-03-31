@@ -9,11 +9,11 @@ import java.awt.*;
 import java.util.Arrays;
 import java.util.Collections;
 
-public class DrawingCycle extends JFrame {
+public class CountCycle extends JFrame {
     public static QuadrilateralResult[] quadrilateralResults;
     public static int index;
     public static QuadrilateralResult quadrilateralResult;
-    public DrawingCycle() throws InterruptedException {
+    public CountCycle() throws InterruptedException {
         super("Result");
         long t1 = System.currentTimeMillis();
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);

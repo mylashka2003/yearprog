@@ -1,8 +1,7 @@
 package ru.yearprog.yearprog;
 
-import ru.yearprog.yearprog.result.DrawingCycle;
+import ru.yearprog.yearprog.result.CountCycle;
 
-import javax.management.remote.JMXAddressable;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -71,7 +70,7 @@ public class ClassicFrame extends JFrame {
             } else {
                 this.dispose();
                 try {
-                    new DrawingCycle();
+                    new CountCycle();
                 } catch (InterruptedException ex) {
                     throw new RuntimeException(ex);
                 }

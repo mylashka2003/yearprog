@@ -1,6 +1,6 @@
 package ru.yearprog.yearprog;
 
-import ru.yearprog.yearprog.result.DrawingCycle;
+import ru.yearprog.yearprog.result.CountCycle;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,21 +15,21 @@ class InputMiniWindow extends JFrame {
         this.add(panel);
         this.setResizable(false);
         this.pack();
-        panel.setLayout(null);
+        panel.setLayout(new GridLayout(3, 2));
 
         JButton next = new JButton("Next");
         JButton finish = new JButton("Finish!");
 
-        Main.setRelativeSize(0, 0.5, 0.5, 0.25, next, panel);
-        Main.setRelativeSize(0.5, 0.5, 0.5, 0.25, finish, panel);
+        //Main.setRelativeSize(0, 0.5, 0.5, 0.25, next, panel);
+        //Main.setRelativeSize(0.5, 0.5, 0.5, 0.25, finish, panel);
 
         SpinnerModel modelX = new SpinnerNumberModel(0, -500, 500, 1);
         SpinnerModel modelY = new SpinnerNumberModel(0, -500, 500, 1);
         JSpinner xSpinner = new JSpinner(modelX);
         JSpinner ySpinner = new JSpinner(modelY);
 
-        Main.setRelativeSize(0.5, 0, 0.5, 0.25, xSpinner, panel);
-        Main.setRelativeSize(0.5, 0.25, 0.5, 0.25, ySpinner, panel);
+        //Main.setRelativeSize(0.5, 0, 0.5, 0.25, xSpinner, panel);
+        //Main.setRelativeSize(0.5, 0.25, 0.5, 0.25, ySpinner, panel);
 
         Font labelFont = new Font("Liberation Mono", Font.BOLD, 25);
         JLabel xLabel = new JLabel("x coord: ");
@@ -41,15 +41,17 @@ class InputMiniWindow extends JFrame {
         xSpinner.setFont(labelFont);
         ySpinner.setFont(labelFont);
 
-        Main.setRelativeSize(0.05, 0, 0.45, 0.25, xLabel, panel);
-        Main.setRelativeSize(0.05, 0.25, 0.45, 0.25, yLabel, panel);
+        //Main.setRelativeSize(0.05, 0, 0.45, 0.25, xLabel, panel);
+        //.Main.setRelativeSize(0.05, 0.25, 0.45, 0.25, yLabel, panel);
+
+        panel.add(xLabel);
+        panel.add(xSpinner);
+
+        panel.add(yLabel);
+        panel.add(ySpinner);
 
         panel.add(next);
         panel.add(finish);
-        panel.add(xSpinner);
-        panel.add(ySpinner);
-        panel.add(xLabel);
-        panel.add(yLabel);
 
         next.addActionListener(e -> {
             int x = (int) modelX.getValue();
@@ -75,7 +77,7 @@ class InputMiniWindow extends JFrame {
                 this.dispose();
                 Main.f.dispose();
                 try {
-                    new DrawingCycle();
+                    new CountCycle();
                 } catch (InterruptedException ex) {
                     throw new RuntimeException(ex);
                 }

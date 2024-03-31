@@ -18,12 +18,6 @@ public class Main {
         countOfPoints++;
     }
 
-    public static void setRelativeSize(double startX, double startY, double sizeX, double sizeY,
-                                       JComponent component, JComponent parentComponent) {
-        component.setBounds((int) (parentComponent.getWidth() * startX), (int) (parentComponent.getHeight() * startY),
-                (int) (parentComponent.getWidth() * sizeX), (int) (parentComponent.getHeight() * sizeY));
-    }
-
     public static void drawPoint(Color color, Point point, Graphics g) {
         g.setColor(color);
         g.fillOval(point.x - 3, point.y - 3, 6, 6);
