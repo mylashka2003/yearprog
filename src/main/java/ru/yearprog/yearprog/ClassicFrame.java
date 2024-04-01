@@ -11,6 +11,7 @@ import java.util.Arrays;
 public class ClassicFrame extends JFrame {
     public static ClassicFrame.DrawPanel panel;
     public static boolean drawCoordinatePlane = true;
+    public static int coordinatePlaneSkip = 50;
     public static boolean drawCoordinateLines = true;
 
     public ClassicFrame() {
@@ -22,7 +23,7 @@ public class ClassicFrame extends JFrame {
         menuBar.add(createActionsMenu());
         setJMenuBar(menuBar);
 
-        panel = new ClassicFrame.DrawPanel();
+        panel = new DrawPanel();
         panel.setLayout(null);
         this.getContentPane().add(panel);
         this.pack();
@@ -37,8 +38,22 @@ public class ClassicFrame extends JFrame {
         JMenuItem clear = new JMenuItem("Clear");
         JCheckBoxMenuItem line  = new JCheckBoxMenuItem("Line");
         line.setState(true);
-        JCheckBoxMenuItem plane  = new JCheckBoxMenuItem("Plane");
-        plane.setState(true);
+        JMenu plane  = new JMenu("Plane");
+        JRadioButtonMenuItem skip25 = new JRadioButtonMenuItem("25 step");
+        JRadioButtonMenuItem skip50 = new JRadioButtonMenuItem("50 step");
+        JRadioButtonMenuItem skip100 = new JRadioButtonMenuItem("100 step");
+        JRadioButtonMenuItem off = new JRadioButtonMenuItem("off");
+        ButtonGroup group = new ButtonGroup();
+        skip50.setSelected(true);
+        group.add(skip25);
+        group.add(skip50);
+        group.add(skip100);
+        group.add(off);
+
+        plane.add(skip25);
+        plane.add(skip50);
+        plane.add(skip100);
+        plane.add(off);
 
         actions.add(finish);
         actions.addSeparator();
@@ -48,13 +63,28 @@ public class ClassicFrame extends JFrame {
         actions.addSeparator();
         actions.add(plane);
 
-        line.addActionListener(e -> {
-            ClassicFrame.drawCoordinateLines = line.getState();
+        skip25.addActionListener(e -> {
+            ClassicFrame.coordinatePlaneSkip = 25;
+            ClassicFrame.drawCoordinatePlane = true;
+            this.repaint();
+        });
+        skip50.addActionListener(e -> {
+            ClassicFrame.coordinatePlaneSkip = 50;
+            ClassicFrame.drawCoordinatePlane = true;
+            this.repaint();
+        });
+        skip100.addActionListener(e -> {
+            ClassicFrame.coordinatePlaneSkip = 100;
+            ClassicFrame.drawCoordinatePlane = true;
+            this.repaint();
+        });
+        off.addActionListener(e -> {
+            ClassicFrame.drawCoordinatePlane = false;
             this.repaint();
         });
 
-        plane.addActionListener(e -> {
-            ClassicFrame.drawCoordinatePlane = plane.getState();
+        line.addActionListener(e -> {
+            ClassicFrame.drawCoordinateLines = line.getState();
             this.repaint();
         });
 
@@ -123,7 +153,7 @@ public class ClassicFrame extends JFrame {
             super.paint(g);
 
             if (drawCoordinateLines) Main.drawCoordinateLines(g, Main.fieldSize);
-            if (drawCoordinatePlane) Main.drawCoordinatePlane(g, Main.fieldSize);
+            if (drawCoordinatePlane) Main.drawCoordinatePlane(g, Main.fieldSize, coordinatePlaneSkip);
 
             for (int i = 0; i < Main.countOfPoints; i++) {
                 Main.drawPoint(Color.BLACK, Main.points[i], g);

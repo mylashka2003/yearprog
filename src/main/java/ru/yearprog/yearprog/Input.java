@@ -9,52 +9,38 @@ import java.util.stream.Collectors;
 
 public class Input {
     public static void readFile(File file, JFrame parentComponent) {
-        Scanner fin;
-
         try {
-            fin = new Scanner(file);
+            Scanner fin = new Scanner(file);
             Point[] pointsCur = new Point[1000];
             int index = 0;
 
             while (fin.hasNext()) {
-                if (index + Main.countOfPoints >= 1000) {
-                    JOptionPane.showMessageDialog(parentComponent, "Некорректная структура в файла!", "Error!", JOptionPane.ERROR_MESSAGE);
-                    return;
+                if (index + Main.countOfPoints > 150) {
+                    JOptionPane.showMessageDialog(parentComponent, "Слишком много точек!", "Error!", JOptionPane.ERROR_MESSAGE); return;
                 }
-
-                String s = fin.nextLine();
-                String[] sd = s.split(" ");
-
+                String[] sd = fin.nextLine().split(" ");
                 if (sd.length != 2) {
-                    JOptionPane.showMessageDialog(parentComponent, "Некорректная структура в файла!", "Error!", JOptionPane.ERROR_MESSAGE);
-                    return;
+                    JOptionPane.showMessageDialog(parentComponent, "Неверный формат строки!", "Error!", JOptionPane.ERROR_MESSAGE); return;
                 }
 
                 try {
-                    int x = Integer.parseInt(sd[0]);
-                    int y = Integer.parseInt(sd[1]);
-                    Point p = new Point(x, y);
+                    Point p = new Point(Integer.parseInt(sd[0]), Integer.parseInt(sd[1]));
                     if (Math.abs(p.x) > Main.fieldSize / 2 || Math.abs(p.y) > Main.fieldSize / 2) {
-                        JOptionPane.showMessageDialog(parentComponent, "Некорректная точка в файле!", "Error!", JOptionPane.ERROR_MESSAGE);
-                        return;
+                        JOptionPane.showMessageDialog(parentComponent, "Некорректная точка в файле!", "Error!", JOptionPane.ERROR_MESSAGE); return;
                     }
-                    pointsCur[index] = new Point(x, y);
+                    pointsCur[index] = p;
                     index++;
                 } catch (NumberFormatException e) {
-                    JOptionPane.showMessageDialog(parentComponent, "Некорректная структура в файла!", "Error!", JOptionPane.ERROR_MESSAGE);
-                    return;
+                    JOptionPane.showMessageDialog(parentComponent, "Некорректная точка в файле!", "Error!", JOptionPane.ERROR_MESSAGE); return;
                 }
             }
 
             if (index < 4) {
-                JOptionPane.showMessageDialog(parentComponent, "Введено слишком мало точек!", "Error!", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(parentComponent, "Введено слишком мало точек!", "Error!", JOptionPane.ERROR_MESSAGE); return;
             }
-
-            // Запись в основной массив
             for (Point p : pointsCur) {
                 Main.addPoint(p);
             }
-
             fin.close();
         } catch (FileNotFoundException e) {
             JOptionPane.showMessageDialog(parentComponent, "Некорректно выбран файл!", "Error!", JOptionPane.ERROR_MESSAGE);
@@ -73,14 +59,12 @@ public class Input {
                 this.pack();
                 panel.setLayout(new GridLayout(1,2));
 
-                Font labelFont = new Font("Liberation Mono", Font.BOLD, 20);
+                Font labelFont = new Font("Comic Sans MS", Font.BOLD, 20);
                 JButton input = new JButton("Input");
-                //input.setBounds(100, 0, 100, 70);
                 input.setFont(labelFont);
 
                 SpinnerModel model = new SpinnerNumberModel(1, 1, 100, 1);
                 JSpinner spinner = new JSpinner(model);
-                //spinner.setBounds(0, 0, 100, 70);
                 spinner.setFont(labelFont);
 
                 panel.add(spinner);
@@ -105,7 +89,6 @@ public class Input {
                     int x = random.nextInt(Main.fieldSize + 1);
                     int y = random.nextInt(Main.fieldSize + 1);
                     Point point = new Point(x, y);
-                    //InputMiniWindow.movePoint(point);
                     pointsSet.add(point);
                 }
 
@@ -113,7 +96,7 @@ public class Input {
                 Point[] pointsArray = new Point[pointsSet.size()];
                 Point[] arr = pointsSet.toArray(pointsArray);
                 Main.points = new Point[1000];
-                if (Main.countOfPoints >= 0) System.arraycopy(arr, 0, Main.points, 0, Main.countOfPoints);
+                System.arraycopy(arr, 0, Main.points, 0, Main.countOfPoints);
             }
         }
 

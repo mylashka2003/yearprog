@@ -6,7 +6,7 @@ import java.awt.*;
 public class Main {
     public static Point[] points = new Point[1000];
     public static int countOfPoints = 0;
-    public static final int fieldSize = 700;
+    public static final int fieldSize = 800;
     public static ClassicFrame f;
 
     public static void main(String[] args) {
@@ -45,8 +45,8 @@ public class Main {
         }
     }
 
-    public static void drawCoordinatePlane(Graphics g, int size) {
-        for (int i = 50; i < size; i += 50) {
+    public static void drawCoordinatePlane(Graphics g, int size, int skip) {
+        for (int i = skip; i < size; i += skip) {
             drawDashedLine(g, i, 0, i, size);
             drawDashedLine(g, 0, i, size, i);
         }

@@ -139,7 +139,7 @@ public class CountCycle extends JFrame {
         public void paint(Graphics g) {
             super.paint(g);
             Main.drawCoordinateLines(g, Main.fieldSize);
-            Main.drawCoordinatePlane(g, Main.fieldSize);
+            Main.drawCoordinatePlane(g, Main.fieldSize, 50);
             drawAllPoints(g);
             if (quadrilateralResult != null) quadrilateralResult.draw(g);
         }
