@@ -1,16 +1,25 @@
 package ru.yearprog.yearprog;
 
-
-import ru.yearprog.yearprog.Main;
-
 import java.awt.*;
 
-public class QuadrilateralResult {
-    public double area;
-    public Point[] points;
-    public String type;
+public class Quadrilateral {
+    private final double area;
+    private final Point[] points;
+    private final String type;
 
-    QuadrilateralResult(double area, Point[] points, String type) {
+    public double getArea() {
+        return area;
+    }
+
+    public Point[] getPoints() {
+        return points;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    Quadrilateral(double area, Point[] points, String type) {
         this.area = area;
         this.points = points;
         this.type = type;

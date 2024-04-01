@@ -2,7 +2,7 @@ package ru.yearprog.yearprog.result;
 
 import ru.yearprog.yearprog.Main;
 import ru.yearprog.yearprog.Geometry;
-import ru.yearprog.yearprog.QuadrilateralResult;
+import ru.yearprog.yearprog.Quadrilateral;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,12 +10,11 @@ import java.util.Arrays;
 import java.util.Collections;
 
 public class CountCycle extends JFrame {
-    public static QuadrilateralResult[] quadrilateralResults;
+    public static Quadrilateral[] quadrilaterals;
     public static int index;
-    public static QuadrilateralResult quadrilateralResult;
-    public CountCycle() throws InterruptedException {
+    public static Quadrilateral quadrilateral;
+    public CountCycle() {
         super("Result");
-        long t1 = System.currentTimeMillis();
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         DrawCyclePanel panel = new DrawCyclePanel();
@@ -26,54 +25,40 @@ public class CountCycle extends JFrame {
         this.setResizable(false);
 
         // 1
-        long startTime = System.currentTimeMillis();
         generateRs(Main.points, Main.countOfPoints);
-        long endTime = System.currentTimeMillis();
-        System.out.println(endTime - startTime);
-
-        new QuadrilateralInfo();
 
         // 3
-        startTime = System.currentTimeMillis();
-        quickSort(quadrilateralResults, 0, quadrilateralResults.length - 1);
-        endTime = System.currentTimeMillis();
-        System.out.println(endTime - startTime);
+        quickSort(quadrilaterals, 0, quadrilaterals.length - 1);
 
-        int length = Math.min(10, quadrilateralResults.length);
-        QuadrilateralResult[] top10 = new QuadrilateralResult[length];
-        System.arraycopy(quadrilateralResults, 0, top10, 0, length);
-        java.util.List<QuadrilateralResult> tops = Arrays.asList(top10);
+        int length = Math.min(10, quadrilaterals.length);
+        Quadrilateral[] top10 = new Quadrilateral[length];
+        System.arraycopy(quadrilaterals, 0, top10, 0, length);
+        java.util.List<Quadrilateral> tops = Arrays.asList(top10);
         Collections.reverse(tops);
-        top10 = tops.toArray(new QuadrilateralResult[0]);
+        top10 = tops.toArray(new Quadrilateral[0]);
 
-        long t2 = System.currentTimeMillis();
-        System.out.println("------");
-        System.out.println(t2 - t1);
-
+        new QuadrilateralInfo();
         draw(panel, top10);
     }
 
-    public static int binomialCoefficient(int n, int k) {
-        if (k < 0 || k > n) return 0;
-        if (k > n - k) k = n - k;
-
+    private static int binomialCoefficient(int n) {
         int coefficient = 1;
-        for (int i = 1; i <= k; i++) {
-            coefficient *= n - (k - i);
+        for (int i = 1; i <= 4; i++) {
+            coefficient *= n - (4 - i);
             coefficient /= i;
         }
         return coefficient;
     }
 
-    public void generateRs(Point[] points, int count) {
+    private void generateRs(Point[] points, int count) {
         int index = 0;
-        quadrilateralResults = new QuadrilateralResult[binomialCoefficient(count, 4)];
+        quadrilaterals = new Quadrilateral[binomialCoefficient(count)];
         for (int a = 0; a < count - 3; a++) {
             for (int b = a + 1; b < count - 2; b++) {
                 for (int c = b + 1; c < count - 1; c++) {
                     for (int d = c + 1; d < count; d++) {
-                        QuadrilateralResult r = Geometry.calculateQuadrilateralArea(points[a], points[b], points[c], points[d]);
-                        quadrilateralResults[index] = r;
+                        Quadrilateral r = Geometry.calculateQuadrilateralArea(points[a], points[b], points[c], points[d]);
+                        quadrilaterals[index] = r;
                         index++;
                     }
                 }
@@ -81,13 +66,13 @@ public class CountCycle extends JFrame {
         }
     }
 
-    public static void draw(JPanel panel, QuadrilateralResult[] top) {
+    private static void draw(JPanel panel, Quadrilateral[] top) {
         index = 0;
         Timer timer = new Timer(1000, e -> {
             if (index < top.length) {
-                quadrilateralResult = top[index];
+                quadrilateral = top[index];
                 panel.repaint();
-                QuadrilateralInfo.updateTable(quadrilateralResult);
+                QuadrilateralInfo.updateTable(quadrilateral);
                 index++;
             } else {
                 ((Timer)e.getSource()).stop();
@@ -97,7 +82,7 @@ public class CountCycle extends JFrame {
         timer.start();
     }
 
-    public static void quickSort(QuadrilateralResult[] shapes, int begin, int end) {
+    private static void quickSort(Quadrilateral[] shapes, int begin, int end) {
         if (begin < end) {
             int partitionIndex = partition(shapes, begin, end);
 
@@ -106,23 +91,20 @@ public class CountCycle extends JFrame {
         }
     }
 
-    private static int partition(QuadrilateralResult[] shapes, int begin, int end) {
-        double pivot = shapes[end].area;
+    private static int partition(Quadrilateral[] shapes, int begin, int end) {
+        double pivot = shapes[end].getArea();
         int i = (begin - 1);
 
         for (int j = begin; j < end; j++) {
-            if (shapes[j].area >= pivot) {
+            if (shapes[j].getArea() >= pivot) {
                 i++;
-
-                // Меняем местами shapes[i] и shapes[j]
-                QuadrilateralResult swapTemp = shapes[i];
+                Quadrilateral swapTemp = shapes[i];
                 shapes[i] = shapes[j];
                 shapes[j] = swapTemp;
             }
         }
 
-        // Меняем местами shapes[i + 1] и shapes[end] (или pivot)
-        QuadrilateralResult swapTemp = shapes[i + 1];
+        Quadrilateral swapTemp = shapes[i + 1];
         shapes[i + 1] = shapes[end];
         shapes[end] = swapTemp;
 
@@ -141,10 +123,10 @@ public class CountCycle extends JFrame {
             Main.drawCoordinateLines(g, Main.fieldSize);
             Main.drawCoordinatePlane(g, Main.fieldSize, 50);
             drawAllPoints(g);
-            if (quadrilateralResult != null) quadrilateralResult.draw(g);
+            if (quadrilateral != null) quadrilateral.draw(g);
         }
 
-        public void drawAllPoints(Graphics g) {
+        private void drawAllPoints(Graphics g) {
             for (int i = 0; i < Main.countOfPoints; i++) {
                 Main.drawPoint(Color.BLACK, Main.points[i], g);
             }

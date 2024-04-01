@@ -35,17 +35,17 @@ public class Geometry {
     }
 
     // Вычисление максимальной площади и порядка точек невыпуклого четырехугольника
-    private static QuadrilateralResult nonConvexQuadrilateralArea(Point p, Point p1, Point p2, Point p3) {
+    private static Quadrilateral nonConvexQuadrilateralArea(Point p, Point p1, Point p2, Point p3) {
         double area1 = triangleArea(p1, p2, p) + triangleArea(p2, p3, p);
         double area2 = triangleArea(p1, p3, p) + triangleArea(p2, p3, p);
         double area3 = triangleArea(p1, p2, p) + triangleArea(p1, p3, p);
 
         if (area1 >= area2 && area1 >= area3) {
-            return new QuadrilateralResult(area1, new Point[]{p, p1, p2, p3}, "nonConvex");
+            return new Quadrilateral(area1, new Point[]{p, p1, p2, p3}, "nonConvex");
         } else if (area2 >= area1 && area2 >= area3) {
-            return new QuadrilateralResult(area2, new Point[]{p, p1, p3, p2}, "nonConvex");
+            return new Quadrilateral(area2, new Point[]{p, p1, p3, p2}, "nonConvex");
         } else {
-            return new QuadrilateralResult(area3, new Point[]{p, p2, p1, p3}, "nonConvex");
+            return new Quadrilateral(area3, new Point[]{p, p2, p1, p3}, "nonConvex");
         }
     }
 
@@ -109,32 +109,32 @@ public class Geometry {
     }
 
     // Основная проверка и подсчет площади
-    public static QuadrilateralResult calculateQuadrilateralArea(Point p1, Point p2, Point p3, Point p4) {
+    public static Quadrilateral calculateQuadrilateralArea(Point p1, Point p2, Point p3, Point p4) {
         if (areCollinear(p1, p2, p3) || areCollinear(p1, p2, p4) ||
                 areCollinear(p1, p3, p4) || areCollinear(p2, p3, p4)) {
 
             // Все точки на одной прямой -> Линия
             if (areCollinear(p1, p2, p3) && areCollinear(p1, p2, p4) &&
                     areCollinear(p1, p3, p4) && areCollinear(p2, p3, p4)) {
-                return new QuadrilateralResult(0, findExtremePoints(new Point[]{p1, p2, p3, p4}), "line");
+                return new Quadrilateral(0, findExtremePoints(new Point[]{p1, p2, p3, p4}), "line");
             }
 
             // Три точки на одной прямой -> Треугольник
             if (areCollinear(p1, p2, p3)) {
                 Point[] p = findExtremePoints(new Point[]{p1, p2, p3});
-                return new QuadrilateralResult(triangleArea(p[0], p[2], p4), new Point[]{p[0], p[1], p[2], p4}, "triangle");
+                return new Quadrilateral(triangleArea(p[0], p[2], p4), new Point[]{p[0], p[1], p[2], p4}, "triangle");
             }
             if (areCollinear(p1, p2, p4)) {
                 Point[] p = findExtremePoints(new Point[]{p1, p2, p4});
-                return new QuadrilateralResult(triangleArea(p[0], p[2], p3), new Point[]{p[0], p[1], p[2], p3}, "triangle");
+                return new Quadrilateral(triangleArea(p[0], p[2], p3), new Point[]{p[0], p[1], p[2], p3}, "triangle");
             }
             if (areCollinear(p1, p3, p4)) {
                 Point[] p = findExtremePoints(new Point[]{p1, p3, p4});
-                return new QuadrilateralResult(triangleArea(p[0], p[2], p2), new Point[]{p[0], p[1], p[2], p2}, "triangle");
+                return new Quadrilateral(triangleArea(p[0], p[2], p2), new Point[]{p[0], p[1], p[2], p2}, "triangle");
             }
             if (areCollinear(p2, p3, p4)) {
                 Point[] p = findExtremePoints(new Point[]{p2, p3, p4});
-                return new QuadrilateralResult(triangleArea(p[0], p[2], p1), new Point[]{p[0], p[1], p[2], p1}, "triangle");
+                return new Quadrilateral(triangleArea(p[0], p[2], p1), new Point[]{p[0], p[1], p[2], p1}, "triangle");
             }
         }
 
@@ -146,6 +146,6 @@ public class Geometry {
 
         // Выпуклый сортированный четырёхугольник
         Point[] sortedPoints = sortPoints(new Point[]{p1, p2, p3, p4});
-        return new QuadrilateralResult(convexQuadrilateralArea(sortedPoints[0], sortedPoints[1], sortedPoints[2], sortedPoints[3]), sortedPoints, "convex");
+        return new Quadrilateral(convexQuadrilateralArea(sortedPoints[0], sortedPoints[1], sortedPoints[2], sortedPoints[3]), sortedPoints, "convex");
     }
 }

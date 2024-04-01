@@ -4,13 +4,24 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Main {
-    public static Point[] points = new Point[1000];
+    public static final int maxPoints = 150;
+    public static Point[] points = new Point[maxPoints];
     public static int countOfPoints = 0;
-    public static final int fieldSize = 800;
+    public static int fieldSize;
     public static ClassicFrame f;
+    public static IntegerInput input;
 
     public static void main(String[] args) {
-        f = new ClassicFrame();
+        Point p = new Point(100, 100);
+        System.out.println(p);
+        input = new IntegerInput(600, 800, value -> {
+            if (value % 200 == 0) {
+                fieldSize = value;
+                f = new ClassicFrame();
+            } else {
+                JOptionPane.showMessageDialog(input, "Некорректный формат!", "Error!", JOptionPane.ERROR_MESSAGE);
+            }
+        }, "Size", "Field size");
     }
 
     public static void addPoint(Point p) {

@@ -11,7 +11,7 @@ public class Input {
     public static void readFile(File file, JFrame parentComponent) {
         try {
             Scanner fin = new Scanner(file);
-            Point[] pointsCur = new Point[1000];
+            Point[] pointsCur = new Point[Main.maxPoints];
             int index = 0;
 
             while (fin.hasNext()) {
@@ -48,58 +48,27 @@ public class Input {
     }
 
     public static void getRandomPoints() {
-        class CountInput extends JFrame {
-            public CountInput() {
-                super("How many");
+        new IntegerInput(1, Main.maxPoints - Main.countOfPoints, Input::generateRandomPoints, "Size", "Points count");
+    }
 
-                JPanel panel = new JPanel(true);
-                panel.setPreferredSize(new Dimension(200, 70));
-                this.add(panel);
-                this.setResizable(false);
-                this.pack();
-                panel.setLayout(new GridLayout(1,2));
+    private static void generateRandomPoints(int value) {
+        Set<Point> pointsSet = Arrays.stream(Main.points).collect(Collectors.toSet());
+        pointsSet.remove(null);
+        Random random = new Random();
+        int size = Main.countOfPoints + value;
 
-                Font labelFont = new Font("Comic Sans MS", Font.BOLD, 20);
-                JButton input = new JButton("Input");
-                input.setFont(labelFont);
-
-                SpinnerModel model = new SpinnerNumberModel(1, 1, 100, 1);
-                JSpinner spinner = new JSpinner(model);
-                spinner.setFont(labelFont);
-
-                panel.add(spinner);
-                panel.add(input);
-
-                input.addActionListener(e -> {
-                    generateRandomPoints((Integer) spinner.getValue());
-                    Main.f.repaint();
-                    this.dispose();
-                });
-
-                this.setVisible(true);
-            }
-
-            private void generateRandomPoints(int value) {
-                Set<Point> pointsSet = Arrays.stream(Main.points).collect(Collectors.toSet());
-                pointsSet.remove(null);
-                Random random = new Random();
-                int size = Main.countOfPoints + value;
-
-                while (pointsSet.size() < size) {
-                    int x = random.nextInt(Main.fieldSize + 1);
-                    int y = random.nextInt(Main.fieldSize + 1);
-                    Point point = new Point(x, y);
-                    pointsSet.add(point);
-                }
-
-                Main.countOfPoints = size;
-                Point[] pointsArray = new Point[pointsSet.size()];
-                Point[] arr = pointsSet.toArray(pointsArray);
-                Main.points = new Point[1000];
-                System.arraycopy(arr, 0, Main.points, 0, Main.countOfPoints);
-            }
+        while (pointsSet.size() < size) {
+            int x = random.nextInt(Main.fieldSize + 1);
+            int y = random.nextInt(Main.fieldSize + 1);
+            Point point = new Point(x, y);
+            pointsSet.add(point);
         }
 
-        new CountInput();
+        Main.countOfPoints = size;
+        Point[] pointsArray = new Point[pointsSet.size()];
+        Point[] arr = pointsSet.toArray(pointsArray);
+        Main.points = new Point[Main.maxPoints];
+        System.arraycopy(arr, 0, Main.points, 0, Main.countOfPoints);
+        ClassicFrame.panel.repaint();
     }
 }

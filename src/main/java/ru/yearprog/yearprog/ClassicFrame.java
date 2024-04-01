@@ -9,7 +9,7 @@ import java.awt.event.MouseListener;
 import java.util.Arrays;
 
 public class ClassicFrame extends JFrame {
-    public static ClassicFrame.DrawPanel panel;
+    public static DrawPanel panel;
     public static boolean drawCoordinatePlane = true;
     public static int coordinatePlaneSkip = 50;
     public static boolean drawCoordinateLines = true;
@@ -89,7 +89,7 @@ public class ClassicFrame extends JFrame {
         });
 
         clear.addActionListener(e -> {
-            Main.points = new Point[1000];
+            Main.points = new Point[Main.maxPoints];
             Main.countOfPoints = 0;
             this.repaint();
         });
@@ -99,11 +99,7 @@ public class ClassicFrame extends JFrame {
                 JOptionPane.showMessageDialog(this, "Not enough points!", "Error!", JOptionPane.ERROR_MESSAGE);
             } else {
                 this.dispose();
-                try {
-                    new CountCycle();
-                } catch (InterruptedException ex) {
-                    throw new RuntimeException(ex);
-                }
+                new CountCycle();
             }
         });
 
@@ -174,8 +170,7 @@ public class ClassicFrame extends JFrame {
             if (Arrays.asList(Main.points).contains(p)) {
                 JOptionPane.showMessageDialog(this, "Repeated point!", "Error!", JOptionPane.ERROR_MESSAGE);
             } else {
-                Main.points[Main.countOfPoints] = p;
-                Main.countOfPoints++;
+                Main.addPoint(p);
             }
             this.repaint();
         }

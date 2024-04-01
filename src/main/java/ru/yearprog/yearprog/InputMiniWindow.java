@@ -64,8 +64,7 @@ class InputMiniWindow extends JFrame {
             if (Arrays.asList(Main.points).contains(p)) {
                 JOptionPane.showMessageDialog(this, "Repeated point!", "Error!", JOptionPane.ERROR_MESSAGE);
             } else {
-                Main.points[Main.countOfPoints] = p;
-                Main.countOfPoints++;
+                Main.addPoint(p);
             }
             ClassicFrame.panel.repaint();
         });
@@ -76,11 +75,7 @@ class InputMiniWindow extends JFrame {
             } else {
                 this.dispose();
                 Main.f.dispose();
-                try {
-                    new CountCycle();
-                } catch (InterruptedException ex) {
-                    throw new RuntimeException(ex);
-                }
+                new CountCycle();
             }
         });
 
