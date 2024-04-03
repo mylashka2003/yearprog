@@ -1,89 +1,85 @@
 package ru.yearprog.yearprog;
 
-import ru.yearprog.yearprog.result.CountCycle;
-
 import javax.swing.*;
 import java.awt.*;
 import java.util.Arrays;
 
 class InputMiniWindow extends JFrame {
+    private JButton next;
+    private JButton finish;
+    private SpinnerModel modelX;
+    private SpinnerModel modelY;
+    private JSpinner xSpinner;
+    private JSpinner ySpinner;
+    private JLabel xLabel;
+    private JLabel yLabel;
     public InputMiniWindow() {
         super("Input");
-
         JPanel panel = new JPanel(true);
         panel.setPreferredSize(new Dimension(300, 200));
+        panel.setLayout(new GridLayout(3, 2));
         this.add(panel);
         this.setResizable(false);
         this.pack();
-        panel.setLayout(new GridLayout(3, 2));
-
-        JButton next = new JButton("Next");
-        JButton finish = new JButton("Finish!");
-
-        //Main.setRelativeSize(0, 0.5, 0.5, 0.25, next, panel);
-        //Main.setRelativeSize(0.5, 0.5, 0.5, 0.25, finish, panel);
-
-        SpinnerModel modelX = new SpinnerNumberModel(0, -500, 500, 1);
-        SpinnerModel modelY = new SpinnerNumberModel(0, -500, 500, 1);
-        JSpinner xSpinner = new JSpinner(modelX);
-        JSpinner ySpinner = new JSpinner(modelY);
-
-        //Main.setRelativeSize(0.5, 0, 0.5, 0.25, xSpinner, panel);
-        //Main.setRelativeSize(0.5, 0.25, 0.5, 0.25, ySpinner, panel);
-
-        Font labelFont = new Font("Liberation Mono", Font.BOLD, 25);
-        JLabel xLabel = new JLabel("x coord: ");
-        JLabel yLabel = new JLabel("y coord: ");
-        xLabel.setFont(labelFont);
-        yLabel.setFont(labelFont);
-        next.setFont(labelFont);
-        finish.setFont(labelFont);
-        xSpinner.setFont(labelFont);
-        ySpinner.setFont(labelFont);
-
-        //Main.setRelativeSize(0.05, 0, 0.45, 0.25, xLabel, panel);
-        //.Main.setRelativeSize(0.05, 0.25, 0.45, 0.25, yLabel, panel);
-
-        panel.add(xLabel);
-        panel.add(xSpinner);
-
-        panel.add(yLabel);
-        panel.add(ySpinner);
-
-        panel.add(next);
-        panel.add(finish);
-
-        next.addActionListener(e -> {
-            int x = (int) modelX.getValue();
-            int y = (int) modelY.getValue();
-            modelX.setValue(0);
-            modelY.setValue(0);
-
-            Point p = new Point(x, y);
-            movePoint(p);
-            if (Arrays.asList(Main.points).contains(p)) {
-                JOptionPane.showMessageDialog(this, "Repeated point!", "Error!", JOptionPane.ERROR_MESSAGE);
-            } else {
-                Main.addPoint(p);
-            }
-            ClassicFrame.panel.repaint();
-        });
-
-        finish.addActionListener(e -> {
-            if (Main.countOfPoints < 4) {
-                JOptionPane.showMessageDialog(this, "Not enough points!", "Error!", JOptionPane.ERROR_MESSAGE);
-            } else {
-                this.dispose();
-                Main.f.dispose();
-                new CountCycle();
-            }
-        });
-
+        createStuff();
+        applyFont(new Font("Comic Sans MS", Font.BOLD, 25), new JComponent[]{xLabel, yLabel, xSpinner, ySpinner, next, finish});
+        addToPanel(panel, new JComponent[]{xLabel, xSpinner, yLabel, ySpinner, next, finish});
+        next.addActionListener(e -> nextAction());
+        finish.addActionListener(e -> finishAction());
         this.setVisible(true);
     }
 
+    private void nextAction() {
+        Point p = new Point((int) modelX.getValue(), (int) modelY.getValue());
+        modelX.setValue(0);
+        modelY.setValue(0);
+        movePoint(p);
+        if (Arrays.asList(Main.points).contains(p)) JOptionPane.showMessageDialog(this, "Repeated point!", "Error!", JOptionPane.ERROR_MESSAGE);
+        else Main.addPoint(p);
+        MainFrame.getPanel().repaint();
+    }
+
+    private void finishAction() {
+        if (Main.countOfPoints < 4) JOptionPane.showMessageDialog(this, "Not enough points!", "Error!", JOptionPane.ERROR_MESSAGE);
+        else {
+            this.dispose();
+            Main.getF().dispose();
+            new CountCycle();
+        }
+    }
+
+    private void applyFont(Font font, JComponent[] components) {
+        for (JComponent component : components) {
+            component.setFont(font);
+        }
+    }
+
+    private void addToPanel(JPanel panel, JComponent[] components) {
+        for (JComponent component : components) {
+            panel.add(component);
+        }
+    }
+
+    private void createStuff() {
+        next = new JButton("Next");
+        finish = new JButton("Finish!");
+
+        modelX = new SpinnerNumberModel(0, -500, 500, 1);
+        modelY = new SpinnerNumberModel(0, -500, 500, 1);
+        xSpinner = new JSpinner(modelX);
+        ySpinner = new JSpinner(modelY);
+
+        xLabel = new JLabel("x coord: ");
+        yLabel = new JLabel("y coord: ");
+    }
+
     public static void movePoint(Point point) {
-        point.x = Main.fieldSize / 2 + point.x;
-        point.y = Main.fieldSize / 2 - point.y;
+        point.x = Main.getFieldSize() / 2 + point.x;
+        point.y = Main.getFieldSize() / 2 - point.y;
+    }
+
+    public static void demovePoint(Point point) {
+        point.x = point.x - Main.getFieldSize() / 2;
+        point.y = point.y * -1 + Main.getFieldSize() / 2;
     }
 }

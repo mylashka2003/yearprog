@@ -1,8 +1,4 @@
-package ru.yearprog.yearprog.result;
-
-import ru.yearprog.yearprog.Main;
-import ru.yearprog.yearprog.Geometry;
-import ru.yearprog.yearprog.Quadrilateral;
+package ru.yearprog.yearprog;
 
 import javax.swing.*;
 import java.awt.*;
@@ -114,21 +110,21 @@ public class CountCycle extends JFrame {
     static class DrawCyclePanel extends JPanel {
         public DrawCyclePanel() {
             super(true);
-            this.setPreferredSize(new Dimension(Main.fieldSize, Main.fieldSize));
+            this.setPreferredSize(new Dimension(Main.getFieldSize(), Main.getFieldSize()));
         }
 
         @Override
         public void paint(Graphics g) {
             super.paint(g);
-            Main.drawCoordinateLines(g, Main.fieldSize);
-            Main.drawCoordinatePlane(g, Main.fieldSize, 50);
+            MainFrame.drawCoordinateLines(g, Main.getFieldSize());
+            MainFrame.drawCoordinatePlane(g, Main.getFieldSize(), 50);
             drawAllPoints(g);
             if (quadrilateral != null) quadrilateral.draw(g);
         }
 
         private void drawAllPoints(Graphics g) {
             for (int i = 0; i < Main.countOfPoints; i++) {
-                Main.drawPoint(Color.BLACK, Main.points[i], g);
+                MainFrame.drawPoint(Color.BLACK, Main.points[i], g);
             }
         }
     }

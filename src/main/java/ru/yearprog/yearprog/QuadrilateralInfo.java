@@ -1,5 +1,6 @@
-package ru.yearprog.yearprog.result;
+package ru.yearprog.yearprog;
 
+import ru.yearprog.yearprog.CountCycle;
 import ru.yearprog.yearprog.Quadrilateral;
 
 import javax.swing.*;
@@ -33,7 +34,6 @@ public class QuadrilateralInfo extends JFrame {
         this.setBounds(1000, 0, 300, 225);
         this.setResizable(false);
         this.setVisible(true);
-
     }
 
     public static void updateTable(Quadrilateral quadrilateral) {

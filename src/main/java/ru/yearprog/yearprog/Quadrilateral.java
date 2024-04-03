@@ -15,10 +15,6 @@ public class Quadrilateral {
         return points;
     }
 
-    public String getType() {
-        return type;
-    }
-
     Quadrilateral(double area, Point[] points, String type) {
         this.area = area;
         this.points = points;
@@ -33,9 +29,18 @@ public class Quadrilateral {
         g.drawLine(points[2].x, points[2].y, points[3].x, points[3].y);
         g.drawLine(points[3].x, points[3].y, points[0].x, points[0].y);
 
-        Main.drawPoint(Color.RED, points[0], g);
-        Main.drawPoint(Color.RED, points[1], g);
-        Main.drawPoint(Color.RED, points[2], g);
-        Main.drawPoint(Color.RED, points[3], g);
+        MainFrame.drawPoint(Color.RED, points[0], g);
+        MainFrame.drawPoint(Color.RED, points[1], g);
+        MainFrame.drawPoint(Color.RED, points[2], g);
+        MainFrame.drawPoint(Color.RED, points[3], g);
+    }
+
+    @Override
+    public String toString() {
+        return "Type: " + type + " | Points " + "(" + points[0].x + "," + points[0].y + ") " +
+                                                "(" + points[1].x + "," + points[1].y + ") " +
+                                                "(" + points[2].x + "," + points[2].y + ") " +
+                                                "(" + points[3].x + "," + points[0].y + ") " + "| Area" +
+                area;
     }
 }

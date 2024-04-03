@@ -64,11 +64,6 @@ public class Geometry {
             // Иначе последней будет третья точка
             points[2] = second;
             points[1] = third;
-            points[0] = first;
-        } else {
-            points[0] = first;
-            points[1] = second;
-            points[2] = third;
         }
 
         // Проверяем, не находится ли вторая точка за пределами первой и третьей
@@ -110,42 +105,49 @@ public class Geometry {
 
     // Основная проверка и подсчет площади
     public static Quadrilateral calculateQuadrilateralArea(Point p1, Point p2, Point p3, Point p4) {
-        if (areCollinear(p1, p2, p3) || areCollinear(p1, p2, p4) ||
-                areCollinear(p1, p3, p4) || areCollinear(p2, p3, p4)) {
-
+        if (areCollinear(p1, p2, p3) || areCollinear(p1, p2, p4) || areCollinear(p1, p3, p4) || areCollinear(p2, p3, p4)) {
             // Все точки на одной прямой -> Линия
-            if (areCollinear(p1, p2, p3) && areCollinear(p1, p2, p4) &&
-                    areCollinear(p1, p3, p4) && areCollinear(p2, p3, p4)) {
-                return new Quadrilateral(0, findExtremePoints(new Point[]{p1, p2, p3, p4}), "line");
-            }
+            if (areCollinear(p1, p2, p3) && areCollinear(p1, p2, p4) && areCollinear(p1, p3, p4) && areCollinear(p2, p3, p4)) return new Quadrilateral(0, findExtremePoints(new Point[]{p1, p2, p3, p4}), "line");
 
             // Три точки на одной прямой -> Треугольник
-            if (areCollinear(p1, p2, p3)) {
-                Point[] p = findExtremePoints(new Point[]{p1, p2, p3});
-                return new Quadrilateral(triangleArea(p[0], p[2], p4), new Point[]{p[0], p[1], p[2], p4}, "triangle");
-            }
-            if (areCollinear(p1, p2, p4)) {
-                Point[] p = findExtremePoints(new Point[]{p1, p2, p4});
-                return new Quadrilateral(triangleArea(p[0], p[2], p3), new Point[]{p[0], p[1], p[2], p3}, "triangle");
-            }
-            if (areCollinear(p1, p3, p4)) {
-                Point[] p = findExtremePoints(new Point[]{p1, p3, p4});
-                return new Quadrilateral(triangleArea(p[0], p[2], p2), new Point[]{p[0], p[1], p[2], p2}, "triangle");
-            }
-            if (areCollinear(p2, p3, p4)) {
-                Point[] p = findExtremePoints(new Point[]{p2, p3, p4});
-                return new Quadrilateral(triangleArea(p[0], p[2], p1), new Point[]{p[0], p[1], p[2], p1}, "triangle");
-            }
+            Quadrilateral quadrilateral = triangleCheck(p1, p2, p3, p4);
+            if (quadrilateral != null) return quadrilateral;
         }
 
         // Точка внутри треугольника из других -> Невыпуклый
-        if (isPointInsideTriangle(p1, p2, p3, p4)) return nonConvexQuadrilateralArea(p1, p2, p3, p4);
-        if (isPointInsideTriangle(p2, p1, p3, p4)) return nonConvexQuadrilateralArea(p2, p1, p3, p4);
-        if (isPointInsideTriangle(p3, p1, p2, p4)) return nonConvexQuadrilateralArea(p3, p1, p2, p4);
-        if (isPointInsideTriangle(p4, p1, p2, p3)) return nonConvexQuadrilateralArea(p4, p1, p2, p3);
+        Quadrilateral quadrilateral = nonConvexCheck(p1, p2, p3, p4);
+        if (quadrilateral != null) return quadrilateral;
 
         // Выпуклый сортированный четырёхугольник
         Point[] sortedPoints = sortPoints(new Point[]{p1, p2, p3, p4});
         return new Quadrilateral(convexQuadrilateralArea(sortedPoints[0], sortedPoints[1], sortedPoints[2], sortedPoints[3]), sortedPoints, "convex");
+    }
+
+    private static Quadrilateral nonConvexCheck(Point p1, Point p2, Point p3, Point p4) {
+        if (isPointInsideTriangle(p1, p2, p3, p4)) return nonConvexQuadrilateralArea(p1, p2, p3, p4);
+        if (isPointInsideTriangle(p2, p1, p3, p4)) return nonConvexQuadrilateralArea(p2, p1, p3, p4);
+        if (isPointInsideTriangle(p3, p1, p2, p4)) return nonConvexQuadrilateralArea(p3, p1, p2, p4);
+        if (isPointInsideTriangle(p4, p1, p2, p3)) return nonConvexQuadrilateralArea(p4, p1, p2, p3);
+        return null;
+    }
+
+    private static Quadrilateral triangleCheck(Point p1, Point p2, Point p3, Point p4) {
+        if (areCollinear(p1, p2, p3)) {
+            Point[] p = findExtremePoints(new Point[]{p1, p2, p3});
+            return new Quadrilateral(triangleArea(p[0], p[2], p4), new Point[]{p[0], p[1], p[2], p4}, "triangle");
+        }
+        if (areCollinear(p1, p2, p4)) {
+            Point[] p = findExtremePoints(new Point[]{p1, p2, p4});
+            return new Quadrilateral(triangleArea(p[0], p[2], p3), new Point[]{p[0], p[1], p[2], p3}, "triangle");
+        }
+        if (areCollinear(p1, p3, p4)) {
+            Point[] p = findExtremePoints(new Point[]{p1, p3, p4});
+            return new Quadrilateral(triangleArea(p[0], p[2], p2), new Point[]{p[0], p[1], p[2], p2}, "triangle");
+        }
+        if (areCollinear(p2, p3, p4)) {
+            Point[] p = findExtremePoints(new Point[]{p2, p3, p4});
+            return new Quadrilateral(triangleArea(p[0], p[2], p1), new Point[]{p[0], p[1], p[2], p1}, "triangle");
+        }
+        return null;
     }
 }
