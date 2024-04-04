@@ -5,6 +5,7 @@ import java.awt.*;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.concurrent.CountDownLatch;
 
 public class FileWorker {
     public static void writeObjectToFile(File file, Object[] objects) {
@@ -30,11 +31,12 @@ public class FileWorker {
         }
     }
 
-    public static File openFile(JFrame parentComponent) {
+    public static File openFile(JFrame parentComponent, CountDownLatch countDownLatch) {
         JFileChooser fileChooser = new JFileChooser();
 
         fileChooser.setDialogTitle("Choose file");
         if (fileChooser.showOpenDialog(parentComponent) == JFileChooser.APPROVE_OPTION) {
+            if (countDownLatch != null) countDownLatch.countDown();
             return fileChooser.getSelectedFile();
         }
         return null;

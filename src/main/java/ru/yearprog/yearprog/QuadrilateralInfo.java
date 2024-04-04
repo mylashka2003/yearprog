@@ -1,15 +1,13 @@
 package ru.yearprog.yearprog;
 
-import ru.yearprog.yearprog.CountCycle;
-import ru.yearprog.yearprog.Quadrilateral;
-
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 
 public class QuadrilateralInfo extends JFrame {
-    public static DefaultTableModel model;
-    public static JLabel label;
+    private static DefaultTableModel model;
+    private static JLabel area;
+    private static JLabel type;
 
     public QuadrilateralInfo() {
         super("Info");
@@ -17,21 +15,23 @@ public class QuadrilateralInfo extends JFrame {
 
         model = new DefaultTableModel(new String[]{"Point", "x", "y"}, 4);
 
-        model.addRow(new Object[]{1, CountCycle.quadrilaterals[0].getPoints()[0].x, CountCycle.quadrilaterals[0].getPoints()[0].y});
-        model.addRow(new Object[]{2, CountCycle.quadrilaterals[0].getPoints()[1].x, CountCycle.quadrilaterals[0].getPoints()[1].y});
-        model.addRow(new Object[]{3, CountCycle.quadrilaterals[0].getPoints()[2].x, CountCycle.quadrilaterals[0].getPoints()[2].y});
-        model.addRow(new Object[]{4, CountCycle.quadrilaterals[0].getPoints()[3].x, CountCycle.quadrilaterals[0].getPoints()[3].y});
         JTable table = new JTable(model);
         table.setFont(new Font("Liberation Mono", Font.BOLD, 14));
-        String text = "area: " + CountCycle.quadrilaterals[0].getArea();
-        label = new JLabel(text);
-        label.setFont(new Font("Liberation Mono", Font.BOLD, 25));
+
+        area = new JLabel("");
+        area.setFont(new Font("Liberation Mono", Font.BOLD, 25));
+        type = new JLabel("");
+        type.setFont(new Font("Liberation Mono", Font.BOLD, 25));
         JPanel panel = new JPanel(true);
+        JPanel labels = new JPanel(true);
+        labels.setLayout(new GridLayout(2, 1));
         panel.setLayout(new GridLayout(2, 1));
         panel.add(new JScrollPane(table));
-        panel.add(label);
+        panel.add(labels);
+        labels.add(area);
+        labels.add(type);
         this.add(panel);
-        this.setBounds(1000, 0, 300, 225);
+        this.setBounds(Main.getFieldSize() + 20, 0, 300, 225);
         this.setResizable(false);
         this.setVisible(true);
     }
@@ -42,7 +42,7 @@ public class QuadrilateralInfo extends JFrame {
         model.addRow(new Object[]{2, quadrilateral.getPoints()[1].x, quadrilateral.getPoints()[1].y});
         model.addRow(new Object[]{3, quadrilateral.getPoints()[2].x, quadrilateral.getPoints()[2].y});
         model.addRow(new Object[]{4, quadrilateral.getPoints()[3].x, quadrilateral.getPoints()[3].y});
-        String text = "area: " + quadrilateral.getArea();
-        label.setText(text);
+        area.setText("area: " + quadrilateral.getArea());
+        type.setText("type: " + quadrilateral.getType());
     }
 }

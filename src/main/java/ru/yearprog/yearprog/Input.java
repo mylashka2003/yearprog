@@ -65,7 +65,7 @@ public class Input {
             pointsSet.add(point);
         }
 
-        Main.countOfPoints = size;
+        Main.setCountOfPoints(size);
         Point[] pointsArray = new Point[pointsSet.size()];
         Point[] arr = pointsSet.toArray(pointsArray);
         Main.points = new Point[Main.getMaxPoints()];

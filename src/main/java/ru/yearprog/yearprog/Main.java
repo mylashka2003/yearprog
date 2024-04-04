@@ -4,9 +4,9 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Main {
-    private static final int maxPoints = 150;
+    private static final int maxPoints = 200;
     static Point[] points = new Point[maxPoints];
-    static int countOfPoints = 0;
+    private static int countOfPoints = 0;
     private static int fieldSize;
     private static MainFrame f;
     private static IntegerInput input;
@@ -14,6 +14,10 @@ public class Main {
     public static void resetPoints() {
         Main.points = new Point[Main.maxPoints];
         Main.countOfPoints = 0;
+    }
+
+    public static void setCountOfPoints(int countOfPoints) {
+        Main.countOfPoints = countOfPoints;
     }
 
     public static int getMaxPoints() {

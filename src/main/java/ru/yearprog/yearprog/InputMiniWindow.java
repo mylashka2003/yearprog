@@ -40,7 +40,7 @@ class InputMiniWindow extends JFrame {
     }
 
     private void finishAction() {
-        if (Main.countOfPoints < 4) JOptionPane.showMessageDialog(this, "Not enough points!", "Error!", JOptionPane.ERROR_MESSAGE);
+        if (Main.getCountOfPoints() < 4) JOptionPane.showMessageDialog(this, "Not enough points!", "Error!", JOptionPane.ERROR_MESSAGE);
         else {
             this.dispose();
             Main.getF().dispose();

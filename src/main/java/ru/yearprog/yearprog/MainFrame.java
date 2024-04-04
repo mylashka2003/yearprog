@@ -47,17 +47,15 @@ public class MainFrame extends JFrame {
                 Input.readFile(fileChooser.getSelectedFile(), this);
             } */
 
-            File file1 = FileWorker.openFile(this);
+            File file1 = FileWorker.openFile(this, null);
             if (file1 != null) {
                 Input.readFile(file1, this);
             }
         });
         save.addActionListener(e -> {
-            JFileChooser fileChooser = new JFileChooser();
-
-            fileChooser.setDialogTitle("Choose file");
-            if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-                FileWorker.writeObjectToFile(fileChooser.getSelectedFile(), Main.getPoints());
+            File file1 = FileWorker.openFile(this, null);
+            if (file1 != null) {
+                FileWorker.writeObjectToFile(file1, Main.getPoints());
             }
         });
         file.add(open);
@@ -161,7 +159,7 @@ public class MainFrame extends JFrame {
                 Input.readFile(fileChooser.getSelectedFile(), this);
             } */
 
-            File file1 = FileWorker.openFile(this);
+            File file1 = FileWorker.openFile(this, null);
             if (file1 != null) {
                 Input.readFile(file1, this);
             }
