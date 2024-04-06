@@ -41,7 +41,10 @@ public class Input {
             for (Point p : pointsCur) {
                 if (p != null) {
                     InputMiniWindow.movePoint(p);
-                    if (!Arrays.asList(Data.getPoints()).contains(p)) Data.addPoint(p);
+                    if (!Arrays.asList(Data.getPoints()).contains(p)) {
+                        Data.addPoint(p);
+                        MainFrame.setLastHandInputed(false);
+                    }
                 }
             }
             MainFrame.getPanel().repaint();
@@ -75,7 +78,10 @@ public class Input {
         Point[] pointsArray = new Point[pointsSet.size()];
         Point[] arr = pointsSet.toArray(pointsArray);
         Data.resetPoints();
-        for (Point p : arr) Data.addPoint(p);
+        for (Point p : arr) {
+            Data.addPoint(p);
+            MainFrame.setLastHandInputed(false);
+        }
         MainFrame.getPanel().repaint();
     }
 }

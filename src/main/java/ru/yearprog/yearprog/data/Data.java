@@ -32,4 +32,9 @@ public class Data {
         points[countOfPoints] = p;
         countOfPoints++;
     }
+
+    public static void removeLast() {
+        points[countOfPoints - 1] = null;
+        countOfPoints--;
+    }
 }

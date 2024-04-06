@@ -5,17 +5,20 @@ import ru.yearprog.yearprog.windows.MainFrame;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.Arrays;
 
 public class InputMiniWindow extends JFrame {
     private JButton next;
     private JButton finish;
-    private SpinnerModel modelX;
-    private SpinnerModel modelY;
-    private JSpinner xSpinner;
-    private JSpinner ySpinner;
+    private JTextField xSpinner;
+    private JTextField ySpinner;
     private JLabel xLabel;
     private JLabel yLabel;
+    private boolean shiftPressed = false;
+    private boolean aPressed = false;
+
     public InputMiniWindow() {
         super("Input");
         JPanel panel = new JPanel(true);
@@ -23,25 +26,67 @@ public class InputMiniWindow extends JFrame {
         panel.setLayout(new GridLayout(3, 2));
         this.add(panel);
         this.setResizable(false);
+        this.setFocusable(true);
+        KeyAdapter keyAdapter = createAdapter();
+        this.addKeyListener(keyAdapter);
         this.pack();
         createStuff();
         applyFont(new Font("Comic Sans MS", Font.BOLD, 25), new JComponent[]{xLabel, yLabel, xSpinner, ySpinner, next, finish});
         addToPanel(panel, new JComponent[]{xLabel, xSpinner, yLabel, ySpinner, next, finish});
-        next.addActionListener(e -> nextAction());
+        xSpinner.addKeyListener(keyAdapter);
+        ySpinner.addKeyListener(keyAdapter);
+        next.addKeyListener(keyAdapter);
+        finish.addKeyListener(keyAdapter);
+        next.addActionListener(e -> readValue());
         finish.addActionListener(e -> finishAction());
         this.setVisible(true);
     }
 
-    private void nextAction() {
-        Point p = new Point((int) modelX.getValue(), (int) modelY.getValue());
-        modelX.setValue(0);
-        modelY.setValue(0);
-        movePoint(p);
-        if (Arrays.asList(Data.getPoints()).contains(p)) JOptionPane.showMessageDialog(this, "Repeated point!", "Error!", JOptionPane.ERROR_MESSAGE);
+    private KeyAdapter createAdapter() {
+        return new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) readValue();
+                if (e.getKeyCode() == KeyEvent.VK_SHIFT) shiftPressed = true;
+                if (e.getKeyCode() == KeyEvent.VK_A) aPressed = true;
+                if (shiftPressed && aPressed) finishAction();
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_SHIFT) shiftPressed = false;
+                if (e.getKeyCode() == KeyEvent.VK_A) aPressed = false;
+            }
+        };
+    }
+
+    private void readValue() {
+        String xs = xSpinner.getText();
+        String ys = ySpinner.getText();
+        try {
+            int x = Integer.parseInt(xs);
+            int y = Integer.parseInt(ys);
+            if (x >= -Main.getFieldSize() / 2 && x <= Main.getFieldSize() / 2 && y >= -Main.getFieldSize() / 2 && y <= Main.getFieldSize() / 2) {
+                addPoint(new Point(x, y));
+            } else
+                JOptionPane.showMessageDialog(this, "Number from " + -Main.getFieldSize() / 2 + " to " + Main.getFieldSize() / 2, "Error!", JOptionPane.ERROR_MESSAGE);
+        } catch (NumberFormatException err) {
+            JOptionPane.showMessageDialog(this, "Incorrect format!", "Error!", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void addPoint(Point point) {
+        xSpinner.setText("0");
+        ySpinner.setText("0");
+        movePoint(point);
+        if (Arrays.asList(Data.getPoints()).contains(point)) JOptionPane.showMessageDialog(this, "Repeated point!", "Error!", JOptionPane.ERROR_MESSAGE);
         else if (Data.getMaxPoints() == Data.getCountOfPoints()) {
             JOptionPane.showMessageDialog(this, "Too many points!", "Error!", JOptionPane.ERROR_MESSAGE);
         }
-        else Data.addPoint(p);
+        else {
+            Data.addPoint(point);
+            MainFrame.setLastHandInputed(false);
+        }
         MainFrame.getPanel().repaint();
     }
 
@@ -70,10 +115,10 @@ public class InputMiniWindow extends JFrame {
         next = new JButton("Next");
         finish = new JButton("Finish!");
 
-        modelX = new SpinnerNumberModel(0, -500, 500, 1);
-        modelY = new SpinnerNumberModel(0, -500, 500, 1);
-        xSpinner = new JSpinner(modelX);
-        ySpinner = new JSpinner(modelY);
+        xSpinner = new JTextField("0");
+        xSpinner.setFont(new Font("Comic Sans MS", Font.BOLD, 20));
+        ySpinner = new JTextField("0");
+        ySpinner.setFont(new Font("Comic Sans MS", Font.BOLD, 20));
 
         xLabel = new JLabel("x coord: ");
         yLabel = new JLabel("y coord: ");

@@ -43,7 +43,10 @@ public class DrawPanel extends JPanel implements MouseListener {
             if (Arrays.asList(Data.getPoints()).contains(p)) {
                 JOptionPane.showMessageDialog(this, "Repeated point!", "Error!", JOptionPane.ERROR_MESSAGE);
             } else {
-                if (Data.getCountOfPoints() < Data.getMaxPoints()) Data.addPoint(p);
+                if (Data.getCountOfPoints() < Data.getMaxPoints()) {
+                    Data.addPoint(p);
+                    MainFrame.setLastHandInputed(true);
+                }
                 else JOptionPane.showMessageDialog(this, "Too many points!", "Error!", JOptionPane.ERROR_MESSAGE);
             }
             this.repaint();

@@ -5,6 +5,8 @@ import ru.yearprog.yearprog.data.Data;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.io.File;
 
 public class MainFrame extends JFrame {
@@ -12,6 +14,13 @@ public class MainFrame extends JFrame {
     public static boolean drawCoordinatePlane = true;
     public static int coordinatePlaneSkip = 50;
     public static boolean drawCoordinateLines = true;
+    private static boolean ctrlPressed = false;
+    private static boolean zPressed = false;
+    private static boolean lastHandInputed = false;
+
+    public static void setLastHandInputed(boolean lastHandInputed) {
+        MainFrame.lastHandInputed = lastHandInputed;
+    }
 
     public static DrawPanel getPanel() {
         return panel;
@@ -20,16 +29,32 @@ public class MainFrame extends JFrame {
     public MainFrame() {
         super("Input");
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-
         JMenuBar menuBar = new JMenuBar();
         menuBar.add(createInputMenu());
         menuBar.add(createActionsMenu());
         menuBar.add(createFileMenu());
         menuBar.add(createGraphicsMenu());
         setJMenuBar(menuBar);
-
         panel = new DrawPanel();
         panel.setLayout(null);
+        this.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_CONTROL) ctrlPressed = true;
+                if (e.getKeyCode() == KeyEvent.VK_Z) zPressed = true;
+                if (ctrlPressed && zPressed && lastHandInputed) {
+                    lastHandInputed = false;
+                    Data.removeLast();
+                    Main.getF().repaint();
+                }
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_CONTROL) ctrlPressed = false;
+                if (e.getKeyCode() == KeyEvent.VK_Z) zPressed = false;
+            }
+        });
         this.getContentPane().add(panel);
         this.pack();
         this.setResizable(false);
