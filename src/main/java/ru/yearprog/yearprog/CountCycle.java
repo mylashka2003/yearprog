@@ -21,6 +21,7 @@ public class CountCycle extends JFrame {
     private static DrawCyclePanel panel;
     private final CountDownLatch countDownLatch = new CountDownLatch(2);
     private WIP wip;
+
     public CountCycle() {
         super("Result");
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -67,13 +68,15 @@ public class CountCycle extends JFrame {
     private final SwingWorker<Quadrilateral[], Integer> longProcessingTask = new SwingWorker<>() {
         @Override
         protected Quadrilateral[] doInBackground() {
-            PriorityQueue<Quadrilateral> topShapes = new PriorityQueue<>(10, Comparator.comparingDouble(Quadrilateral::getArea).reversed());
+            PriorityQueue<Quadrilateral> topShapes = new PriorityQueue<>(10, Comparator.comparingDouble(Quadrilateral::getArea));
+
             int index = 0;
             for (int a = 0; a < Data.getCountOfPoints() - 3; a++) {
                 for (int b = a + 1; b < Data.getCountOfPoints() - 2; b++) {
                     for (int c = b + 1; c < Data.getCountOfPoints() - 1; c++) {
                         for (int d = c + 1; d < Data.getCountOfPoints(); d++) {
                             Quadrilateral r = Geometry.calculateQuadrilateralArea(Data.getPoints()[a], Data.getPoints()[b], Data.getPoints()[c], Data.getPoints()[d]);
+
                             if (topShapes.size() < 10) {
                                 topShapes.add(r);
                             } else if (r.getArea() > (topShapes.peek() != null ? topShapes.peek().getArea() : 0)) {
@@ -87,11 +90,13 @@ public class CountCycle extends JFrame {
                 }
             }
             countDownLatch.countDown();
-            Quadrilateral[] top = topShapes.toArray(new Quadrilateral[0]);
-            for (Quadrilateral quadrilateral1 : top) {
-                //System.out.println(quadrilateral1);
+            Quadrilateral[] shapesArray = new Quadrilateral[topShapes.size()];
+            int i = 0;
+            while (!topShapes.isEmpty()) {
+                shapesArray[i++] = topShapes.poll();
             }
-            return top;
+
+            return shapesArray;
         }
 
         @Override
@@ -126,7 +131,7 @@ public class CountCycle extends JFrame {
                 panel.repaint();
                 index++;
             } else {
-                ((Timer)e.getSource()).stop();
+                ((Timer) e.getSource()).stop();
             }
         });
         timer.setInitialDelay(0);
