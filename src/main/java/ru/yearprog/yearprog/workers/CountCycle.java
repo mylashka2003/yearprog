@@ -1,10 +1,13 @@
-package ru.yearprog.yearprog;
+package ru.yearprog.yearprog.workers;
 
+import ru.yearprog.yearprog.Main;
 import ru.yearprog.yearprog.data.Data;
 import ru.yearprog.yearprog.data.Quadrilateral;
 import ru.yearprog.yearprog.windows.MainFrame;
 import ru.yearprog.yearprog.windows.QuadrilateralInfo;
 import ru.yearprog.yearprog.windows.WIP;
+import ru.yearprog.yearprog.workers.FileWorker;
+import ru.yearprog.yearprog.workers.Geometry;
 
 import javax.swing.*;
 import java.awt.*;

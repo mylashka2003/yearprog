@@ -1,6 +1,6 @@
 package ru.yearprog.yearprog.windows;
 
-import ru.yearprog.yearprog.CountCycle;
+import ru.yearprog.yearprog.workers.CountCycle;
 import ru.yearprog.yearprog.data.Data;
 
 import javax.swing.*;

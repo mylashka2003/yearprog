@@ -1,5 +1,6 @@
-package ru.yearprog.yearprog;
+package ru.yearprog.yearprog.input;
 
+import ru.yearprog.yearprog.Main;
 import ru.yearprog.yearprog.data.Data;
 import ru.yearprog.yearprog.windows.MainFrame;
 

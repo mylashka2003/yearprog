@@ -2,11 +2,14 @@ package ru.yearprog.yearprog.windows;
 
 import ru.yearprog.yearprog.*;
 import ru.yearprog.yearprog.data.Data;
+import ru.yearprog.yearprog.input.Input;
+import ru.yearprog.yearprog.input.InputMiniWindow;
+import ru.yearprog.yearprog.workers.CountCycle;
+import ru.yearprog.yearprog.workers.FileWorker;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
+import java.awt.event.*;
 import java.io.File;
 
 public class MainFrame extends JFrame {
@@ -17,6 +20,7 @@ public class MainFrame extends JFrame {
     private static boolean ctrlPressed = false;
     private static boolean zPressed = false;
     private static boolean lastHandInputed = false;
+    private static JMenuBar menuBar;
 
     public static void setLastHandInputed(boolean lastHandInputed) {
         MainFrame.lastHandInputed = lastHandInputed;
@@ -29,15 +33,55 @@ public class MainFrame extends JFrame {
     public MainFrame() {
         super("Input");
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        JMenuBar menuBar = new JMenuBar();
+        menuBar = new JMenuBar();
         menuBar.add(createInputMenu());
         menuBar.add(createActionsMenu());
         menuBar.add(createFileMenu());
         menuBar.add(createGraphicsMenu());
+        menuBar.add(createLocalizationMenu());
         setJMenuBar(menuBar);
         panel = new DrawPanel();
         panel.setLayout(null);
-        this.addKeyListener(new KeyAdapter() {
+        this.addKeyListener(createKeyAdapter());
+        this.getContentPane().add(panel);
+        this.pack();
+        this.setResizable(false);
+        this.setVisible(true);
+    }
+
+    private JMenu createLocalizationMenu() {
+        JMenu localization = new JMenu(Main.getMessages().getString("localization.menu"));
+        localization.setName("localization.menu");
+        JRadioButtonMenuItem ru = new JRadioButtonMenuItem("ru");
+        JRadioButtonMenuItem en = new JRadioButtonMenuItem("en");
+        ButtonGroup group = new ButtonGroup();
+        group.add(ru);
+        group.add(en);
+        en.setSelected(true);
+        localization.add(ru);
+        localization.add(en);
+        ActionListener listener = e -> {
+            Main.setCurrentLocale(e.getActionCommand());
+            updateComponents(menuBar);
+        };
+        ru.addActionListener(listener);
+        en.addActionListener(listener);
+        return localization;
+    }
+
+    private void updateComponents(Container container) {
+        for (Component c : container.getComponents()) {
+            if (c instanceof JMenu) {
+                JMenu jMenu = (JMenu) c;
+                jMenu.setText(Main.getMessages().getString(jMenu.getName()));
+            }
+        }
+        this.revalidate();
+        this.repaint();
+    }
+
+    private KeyListener createKeyAdapter() {
+        return new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_CONTROL) ctrlPressed = true;
@@ -54,15 +98,12 @@ public class MainFrame extends JFrame {
                 if (e.getKeyCode() == KeyEvent.VK_CONTROL) ctrlPressed = false;
                 if (e.getKeyCode() == KeyEvent.VK_Z) zPressed = false;
             }
-        });
-        this.getContentPane().add(panel);
-        this.pack();
-        this.setResizable(false);
-        this.setVisible(true);
+        };
     }
 
     private JMenu createGraphicsMenu() {
-        JMenu graphics = new JMenu("Graphics");
+        JMenu graphics = new JMenu(Main.getMessages().getString("graphics.menu"));
+        graphics.setName("graphics.menu");
         JCheckBoxMenuItem line  = new JCheckBoxMenuItem("Line");
         line.setState(true);
         JMenu plane  = new JMenu("Plane");
@@ -99,7 +140,8 @@ public class MainFrame extends JFrame {
     }
 
     private JMenu createFileMenu() {
-        JMenu file = new JMenu("File");
+        JMenu file = new JMenu(Main.getMessages().getString("file.menu"));
+        file.setName("file.menu");
         JMenuItem open = new JMenuItem("Open");
         JMenuItem save = new JMenuItem("Save");
         open.addActionListener(e -> {
@@ -122,10 +164,10 @@ public class MainFrame extends JFrame {
     }
 
     private JMenu createActionsMenu() {
-        JMenu actions = new JMenu("Actions");
+        JMenu actions = new JMenu(Main.getMessages().getString("actions.menu"));
+        actions.setName("actions.menu");
         JMenuItem finish = new JMenuItem("Finish");
         JMenuItem clear = new JMenuItem("Clear");
-
 
         actions.add(finish);
         actions.addSeparator();
@@ -149,7 +191,8 @@ public class MainFrame extends JFrame {
     }
 
     private JMenu createInputMenu() {
-        JMenu input = new JMenu("Input");
+        JMenu input = new JMenu(Main.getMessages().getString("input.menu"));
+        input.setName("input.menu");
 
         JMenuItem file = new JMenuItem("File");
         JMenuItem keyboard = new JMenuItem("Keyboard");

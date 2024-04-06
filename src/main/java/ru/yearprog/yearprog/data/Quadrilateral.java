@@ -1,6 +1,6 @@
 package ru.yearprog.yearprog.data;
 
-import ru.yearprog.yearprog.InputMiniWindow;
+import ru.yearprog.yearprog.input.InputMiniWindow;
 import ru.yearprog.yearprog.windows.MainFrame;
 
 import java.awt.*;

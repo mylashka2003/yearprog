@@ -1,7 +1,9 @@
-package ru.yearprog.yearprog;
+package ru.yearprog.yearprog.input;
 
+import ru.yearprog.yearprog.Main;
 import ru.yearprog.yearprog.data.Data;
 import ru.yearprog.yearprog.windows.MainFrame;
+import ru.yearprog.yearprog.workers.CountCycle;
 
 import javax.swing.*;
 import java.awt.*;

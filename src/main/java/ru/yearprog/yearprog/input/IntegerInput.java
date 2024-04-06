@@ -1,4 +1,4 @@
-package ru.yearprog.yearprog;
+package ru.yearprog.yearprog.input;
 
 import javax.swing.*;
 import java.awt.*;

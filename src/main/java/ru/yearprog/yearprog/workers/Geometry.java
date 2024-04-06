@@ -1,4 +1,4 @@
-package ru.yearprog.yearprog;
+package ru.yearprog.yearprog.workers;
 
 import ru.yearprog.yearprog.data.Quadrilateral;
 
