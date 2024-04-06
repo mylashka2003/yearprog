@@ -1,36 +1,13 @@
 package ru.yearprog.yearprog;
 
+import ru.yearprog.yearprog.windows.MainFrame;
+
 import javax.swing.*;
-import java.awt.*;
 
 public class Main {
-    private static final int maxPoints = 200;
-    static Point[] points = new Point[maxPoints];
-    private static int countOfPoints = 0;
     private static int fieldSize;
     private static MainFrame f;
     private static IntegerInput input;
-
-    public static void resetPoints() {
-        Main.points = new Point[Main.maxPoints];
-        Main.countOfPoints = 0;
-    }
-
-    public static void setCountOfPoints(int countOfPoints) {
-        Main.countOfPoints = countOfPoints;
-    }
-
-    public static int getMaxPoints() {
-        return maxPoints;
-    }
-
-    public static Point[] getPoints() {
-        return points;
-    }
-
-    public static int getCountOfPoints() {
-        return countOfPoints;
-    }
 
     public static int getFieldSize() {
         return fieldSize;
@@ -47,14 +24,9 @@ public class Main {
                 f = new MainFrame();
                 input.dispose();
             } else {
-                JOptionPane.showMessageDialog(input, "Возможные размеры окна: 600 - 1000, шаг 100", "Error!", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(input, "Windows size: 600 - 1000, step 100", "Error!", JOptionPane.ERROR_MESSAGE);
             }
-        }, "Size", "Field size", false);
+        }, "Size", "Field size", false, true);
         input.setLocationRelativeTo(null);
-    }
-
-    public static void addPoint(Point p) {
-        points[countOfPoints] = p;
-        countOfPoints++;
     }
 }

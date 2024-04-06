@@ -1,5 +1,7 @@
 package ru.yearprog.yearprog;
 
+import ru.yearprog.yearprog.data.Quadrilateral;
+
 import java.awt.Point;
 import java.util.Arrays;
 import java.util.List;
@@ -59,21 +61,15 @@ public class Geometry {
         double distFirstThird = distance(first, third);
 
         if (distFirstSecond > distFirstThird) {
-            // Если расстояние между первой и второй точкой больше, чем между первой и третьей,
-            // ...то вторая точка находится дальше всего и она будет последней
-            // Иначе последней будет третья точка
             points[2] = second;
             points[1] = third;
         }
 
-        // Проверяем, не находится ли вторая точка за пределами первой и третьей
         if (distance(points[0], points[1]) + distance(points[1], points[2]) != distance(points[0], points[2])) {
-            // Если это так, меняем местами первую и третью точки
             Point temp = points[0];
             points[0] = points[2];
             points[2] = temp;
         }
-
         return points;
     }
 
@@ -134,19 +130,19 @@ public class Geometry {
     private static Quadrilateral triangleCheck(Point p1, Point p2, Point p3, Point p4) {
         if (areCollinear(p1, p2, p3)) {
             Point[] p = findExtremePoints(new Point[]{p1, p2, p3});
-            return new Quadrilateral(triangleArea(p[0], p[2], p4), new Point[]{p[0], p[1], p[2], p4}, "triangle");
+            return new Quadrilateral(triangleArea(p[0], p[1], p4), new Point[]{p[0], p[2], p[1], p4}, "triangle");
         }
         if (areCollinear(p1, p2, p4)) {
             Point[] p = findExtremePoints(new Point[]{p1, p2, p4});
-            return new Quadrilateral(triangleArea(p[0], p[2], p3), new Point[]{p[0], p[1], p[2], p3}, "triangle");
+            return new Quadrilateral(triangleArea(p[0], p[1], p3), new Point[]{p[0], p[2], p[1], p3}, "triangle");
         }
         if (areCollinear(p1, p3, p4)) {
             Point[] p = findExtremePoints(new Point[]{p1, p3, p4});
-            return new Quadrilateral(triangleArea(p[0], p[2], p2), new Point[]{p[0], p[1], p[2], p2}, "triangle");
+            return new Quadrilateral(triangleArea(p[0], p[1], p2), new Point[]{p[0], p[2], p[1], p2}, "triangle");
         }
         if (areCollinear(p2, p3, p4)) {
             Point[] p = findExtremePoints(new Point[]{p2, p3, p4});
-            return new Quadrilateral(triangleArea(p[0], p[2], p1), new Point[]{p[0], p[1], p[2], p1}, "triangle");
+            return new Quadrilateral(triangleArea(p[0], p[1], p1), new Point[]{p[0], p[2], p[1], p1}, "triangle");
         }
         return null;
     }

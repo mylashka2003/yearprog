@@ -12,13 +12,13 @@ public class IntegerInput extends JFrame {
     private final JTextField spinner;
     private final boolean disposeAfterUse;
 
-    public IntegerInput(int min, int max, Interface method, String title, String label, boolean disposeAfterUse) {
+    public IntegerInput(int min, int max, Interface method, String title, String label, boolean disposeAfterUse, boolean programStop) {
         super(title);
         this.min = min;
         this.max = max;
         this.method = method;
         this.disposeAfterUse = disposeAfterUse;
-        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        if (programStop) this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         JPanel panel = new JPanel(true);
         panel.setPreferredSize(new Dimension(250, 70));
         panel.setLayout(new GridLayout(1, 2));
@@ -49,9 +49,9 @@ public class IntegerInput extends JFrame {
                 method.act(value);
                 if (disposeAfterUse) this.dispose();
             } else
-                JOptionPane.showMessageDialog(IntegerInput.this, "Число от " + min + " до " + max, "Error!", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(IntegerInput.this, "Number from " + min + " to " + max, "Error!", JOptionPane.ERROR_MESSAGE);
         } catch (NumberFormatException err) {
-            JOptionPane.showMessageDialog(IntegerInput.this, "Некорректный формат!", "Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(IntegerInput.this, "Incorrect format!", "Error!", JOptionPane.ERROR_MESSAGE);
         }
     }
 

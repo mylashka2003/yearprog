@@ -1,5 +1,7 @@
 package ru.yearprog.yearprog;
 
+import ru.yearprog.yearprog.data.Quadrilateral;
+
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
@@ -14,7 +16,7 @@ public class FileWorker {
             for (Object object : objects) {
                 if (object != null) {
                     if (object.getClass() == Point.class) {
-                        Point point = (Point) object;
+                        Point point = (Point) ((Point) object).clone();
                         InputMiniWindow.demovePoint(point);
                         fooWriter.write(point.x + " " + point.y + "\n");
                     }
@@ -31,13 +33,15 @@ public class FileWorker {
         }
     }
 
-    public static File openFile(JFrame parentComponent, CountDownLatch countDownLatch) {
+    public static File openFile(JFrame parentComponent, CountDownLatch countDownLatch, boolean close) {
         JFileChooser fileChooser = new JFileChooser();
 
         fileChooser.setDialogTitle("Choose file");
         if (fileChooser.showOpenDialog(parentComponent) == JFileChooser.APPROVE_OPTION) {
             if (countDownLatch != null) countDownLatch.countDown();
             return fileChooser.getSelectedFile();
+        } else if (close) {
+            System.exit(130);
         }
         return null;
     }

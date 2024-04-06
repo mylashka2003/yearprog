@@ -1,5 +1,8 @@
 package ru.yearprog.yearprog;
 
+import ru.yearprog.yearprog.data.Data;
+import ru.yearprog.yearprog.windows.MainFrame;
+
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
@@ -11,52 +14,55 @@ public class Input {
     public static void readFile(File file, JFrame parentComponent) {
         try {
             Scanner fin = new Scanner(file);
-            Point[] pointsCur = new Point[Main.getMaxPoints()];
+            Point[] pointsCur = new Point[Data.getMaxPoints()];
             int index = 0;
 
             while (fin.hasNext()) {
-                if (index + Main.getCountOfPoints() >= Main.getMaxPoints()) {
-                    JOptionPane.showMessageDialog(parentComponent, "Слишком много точек!", "Error!", JOptionPane.ERROR_MESSAGE); return;
+                if (index + Data.getCountOfPoints() >= Data.getMaxPoints()) {
+                    JOptionPane.showMessageDialog(parentComponent, "Too many points!", "Error!", JOptionPane.ERROR_MESSAGE); return;
                 }
                 String[] sd = fin.nextLine().split(" ");
                 if (sd.length != 2) {
-                    JOptionPane.showMessageDialog(parentComponent, "Неверный формат строки!", "Error!", JOptionPane.ERROR_MESSAGE); return;
+                    JOptionPane.showMessageDialog(parentComponent, "Incorrect string format!", "Error!", JOptionPane.ERROR_MESSAGE); return;
                 }
 
                 try {
                     Point p = new Point(Integer.parseInt(sd[0]), Integer.parseInt(sd[1]));
                     if (Math.abs(p.x) > Main.getFieldSize() / 2 || Math.abs(p.y) > Main.getFieldSize() / 2) {
-                        JOptionPane.showMessageDialog(parentComponent, "Некорректная точка в файле!", "Error!", JOptionPane.ERROR_MESSAGE); return;
+                        JOptionPane.showMessageDialog(parentComponent, "Out of bounce point!", "Error!", JOptionPane.ERROR_MESSAGE); return;
                     }
                     pointsCur[index] = p;
                     index++;
                 } catch (NumberFormatException e) {
-                    JOptionPane.showMessageDialog(parentComponent, "Некорректная точка в файле!", "Error!", JOptionPane.ERROR_MESSAGE); return;
+                    JOptionPane.showMessageDialog(parentComponent, "Incorrect number format point!", "Error!", JOptionPane.ERROR_MESSAGE); return;
                 }
             }
 
             for (Point p : pointsCur) {
                 if (p != null) {
                     InputMiniWindow.movePoint(p);
-                    if (!Arrays.asList(Main.getPoints()).contains(p)) Main.addPoint(p);
+                    if (!Arrays.asList(Data.getPoints()).contains(p)) Data.addPoint(p);
                 }
             }
             MainFrame.getPanel().repaint();
             fin.close();
         } catch (FileNotFoundException e) {
-            JOptionPane.showMessageDialog(parentComponent, "Некорректно выбран файл!", "Error!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(parentComponent, "Incorrect file!", "Error!", JOptionPane.ERROR_MESSAGE);
         }
     }
 
-    public static void getRandomPoints() {
-        new IntegerInput(1, Main.getMaxPoints() - Main.getCountOfPoints(), Input::generateRandomPoints, "Size", "Points count", true);
+    public static void getRandomPoints(JFrame parentComponent) {
+        if (1 > Data.getMaxPoints() - Data.getCountOfPoints()) {
+            JOptionPane.showMessageDialog(parentComponent, "Too many points!", "Error!", JOptionPane.ERROR_MESSAGE);
+        }
+        else new IntegerInput(1, Data.getMaxPoints() - Data.getCountOfPoints(), Input::generateRandomPoints, "Size", "Points count", true, false);
     }
 
     private static void generateRandomPoints(int value) {
-        Set<Point> pointsSet = Arrays.stream(Main.getPoints()).collect(Collectors.toSet());
+        Set<Point> pointsSet = Arrays.stream(Data.getPoints()).collect(Collectors.toSet());
         pointsSet.remove(null);
         Random random = new Random();
-        int size = Main.getCountOfPoints() + value;
+        int size = Data.getCountOfPoints() + value;
 
         while (pointsSet.size() < size) {
             int x = random.nextInt(Main.getFieldSize());
@@ -65,11 +71,11 @@ public class Input {
             pointsSet.add(point);
         }
 
-        Main.setCountOfPoints(size);
+        Data.setCountOfPoints(size);
         Point[] pointsArray = new Point[pointsSet.size()];
         Point[] arr = pointsSet.toArray(pointsArray);
-        Main.points = new Point[Main.getMaxPoints()];
-        System.arraycopy(arr, 0, Main.points, 0, Main.getCountOfPoints());
+        Data.resetPoints();
+        for (Point p : arr) Data.addPoint(p);
         MainFrame.getPanel().repaint();
     }
 }

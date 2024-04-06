@@ -1,4 +1,7 @@
-package ru.yearprog.yearprog;
+package ru.yearprog.yearprog.data;
+
+import ru.yearprog.yearprog.InputMiniWindow;
+import ru.yearprog.yearprog.windows.MainFrame;
 
 import java.awt.*;
 
@@ -11,11 +14,16 @@ public class Quadrilateral {
         return area;
     }
 
-    public Point[] getPoints() {
-        return points;
+    public Point[] getDemoved() {
+        Point[] p1 = new Point[points.length];
+        for (int i = 0; i < points.length; i++) {
+            p1[i] = (Point) points[i].clone();
+        }
+        for (Point p : p1) InputMiniWindow.demovePoint(p);
+        return p1;
     }
 
-    Quadrilateral(double area, Point[] points, String type) {
+    public Quadrilateral(double area, Point[] points, String type) {
         this.area = area;
         this.points = points;
         this.type = type;
@@ -37,10 +45,10 @@ public class Quadrilateral {
 
     @Override
     public String toString() {
-        return "Type: " + type + " | Points: " + "(" + points[0].x + "," + points[0].y + "); " +
-                                                "(" + points[1].x + "," + points[1].y + "); " +
-                                                "(" + points[2].x + "," + points[2].y + "); " +
-                                                "(" + points[3].x + "," + points[0].y + "); " + "| Area: " +
+        return "Type: " + type + " | Points: " + "(" + getDemoved()[0].x + "," + getDemoved()[0].y + "); " +
+                                                "(" + getDemoved()[1].x + "," + getDemoved()[1].y + "); " +
+                                                "(" + getDemoved()[2].x + "," + getDemoved()[2].y + "); " +
+                                                "(" + getDemoved()[3].x + "," + getDemoved()[3].y + "); " + "| Area: " +
                 area;
     }
 

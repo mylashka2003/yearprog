@@ -1,10 +1,13 @@
 package ru.yearprog.yearprog;
 
+import ru.yearprog.yearprog.data.Data;
+import ru.yearprog.yearprog.windows.MainFrame;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.Arrays;
 
-class InputMiniWindow extends JFrame {
+public class InputMiniWindow extends JFrame {
     private JButton next;
     private JButton finish;
     private SpinnerModel modelX;
@@ -34,13 +37,16 @@ class InputMiniWindow extends JFrame {
         modelX.setValue(0);
         modelY.setValue(0);
         movePoint(p);
-        if (Arrays.asList(Main.points).contains(p)) JOptionPane.showMessageDialog(this, "Repeated point!", "Error!", JOptionPane.ERROR_MESSAGE);
-        else Main.addPoint(p);
+        if (Arrays.asList(Data.getPoints()).contains(p)) JOptionPane.showMessageDialog(this, "Repeated point!", "Error!", JOptionPane.ERROR_MESSAGE);
+        else if (Data.getMaxPoints() == Data.getCountOfPoints()) {
+            JOptionPane.showMessageDialog(this, "Too many points!", "Error!", JOptionPane.ERROR_MESSAGE);
+        }
+        else Data.addPoint(p);
         MainFrame.getPanel().repaint();
     }
 
     private void finishAction() {
-        if (Main.getCountOfPoints() < 4) JOptionPane.showMessageDialog(this, "Not enough points!", "Error!", JOptionPane.ERROR_MESSAGE);
+        if (Data.getCountOfPoints() < 4) JOptionPane.showMessageDialog(this, "Not enough points!", "Error!", JOptionPane.ERROR_MESSAGE);
         else {
             this.dispose();
             Main.getF().dispose();
@@ -79,7 +85,6 @@ class InputMiniWindow extends JFrame {
     }
 
     public static void demovePoint(Point point) {
-        point.x = point.x - Main.getFieldSize() / 2;
-        point.y = point.y * -1 + Main.getFieldSize() / 2;
+        point.setLocation(point.x - Main.getFieldSize() / 2, point.y * -1 + Main.getFieldSize() / 2);
     }
 }
