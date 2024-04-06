@@ -21,6 +21,7 @@ public class MainFrame extends JFrame {
     private static boolean zPressed = false;
     private static boolean lastHandInputed = false;
     private static JMenuBar menuBar;
+    private static InputMiniWindow inputMiniWindow;
 
     public static void setLastHandInputed(boolean lastHandInputed) {
         MainFrame.lastHandInputed = lastHandInputed;
@@ -113,6 +114,8 @@ public class MainFrame extends JFrame {
         JRadioButtonMenuItem off = new JRadioButtonMenuItem("off");
         ButtonGroup group = new ButtonGroup();
         skip50.setSelected(true);
+        group.add(off);
+        plane.add(off);
         setupSkips(group, plane, skip25, 25);
         setupSkips(group, plane, skip50, 50);
         setupSkips(group, plane, skip100, 100);
@@ -211,11 +214,18 @@ public class MainFrame extends JFrame {
             }
         });
 
-        keyboard.addActionListener(e -> new InputMiniWindow());
+        keyboard.addActionListener(e -> {
+            if(inputMiniWindow == null) inputMiniWindow = new InputMiniWindow();
+        });
 
         random.addActionListener(e -> Input.getRandomPoints(this));
 
         return input;
+    }
+
+    public static void disposeMini() {
+        inputMiniWindow.dispose();
+        inputMiniWindow = null;
     }
 
     public static void drawPoint(Color color, Point point, Graphics g) {
