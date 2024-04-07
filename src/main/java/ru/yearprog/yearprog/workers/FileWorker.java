@@ -26,6 +26,7 @@ public class FileWorker {
                         if (i != objects.length - 1) fooWriter.write(quadrilateral +"\n");
                         else {
                             fooWriter.write("-----");
+                            fooWriter.write("\n");
                             fooWriter.write(quadrilateral.toString());
                         }
                     }

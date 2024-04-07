@@ -78,7 +78,8 @@ public class CountCycle extends JFrame {
     private final SwingWorker<Quadrilateral[], Integer> longProcessingTask = new SwingWorker<>() {
         @Override
         protected Quadrilateral[] doInBackground() {
-            PriorityQueue<Quadrilateral> topShapes = new PriorityQueue<>(10, Comparator.comparingDouble(Quadrilateral::getArea));
+            PriorityQueue<Quadrilateral> topShapes = new PriorityQueue<>(10,
+                    Comparator.comparingDouble(Quadrilateral::getArea));
 
             int index = 0;
             for (int a = 0; a < Data.getCountOfPoints() - 3; a++) {
@@ -86,7 +87,6 @@ public class CountCycle extends JFrame {
                     for (int c = b + 1; c < Data.getCountOfPoints() - 1; c++) {
                         for (int d = c + 1; d < Data.getCountOfPoints(); d++) {
                             Quadrilateral r = Geometry.calculateQuadrilateralArea(Data.getPoints()[a], Data.getPoints()[b], Data.getPoints()[c], Data.getPoints()[d]);
-
                             if (topShapes.size() < 10) {
                                 topShapes.add(r);
                             } else if (r.getArea() > (topShapes.peek() != null ? topShapes.peek().getArea() : 0)) {

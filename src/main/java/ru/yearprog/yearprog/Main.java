@@ -9,8 +9,8 @@ import java.util.ResourceBundle;
 
 public class Main {
     public static void main(String[] args) {
-        Localization.setMessagesRU(ResourceBundle.getBundle("MessagesBundle", new Locale("ru", "RU")));
-        Localization.setMessagesEN(ResourceBundle.getBundle("MessagesBundle", new Locale("en", "US")));
+        Localization.setMessagesRU(ResourceBundle.getBundle("LanguageRes", new Locale("ru", "RU")));
+        Localization.setMessagesEN(ResourceBundle.getBundle("LanguageRes", new Locale("en", "US")));
         IntegerInput input = new IntegerInput(600, 1000, value -> {
             if (value % 100 == 0) {
                 MainProperties.setFieldSize(value);

@@ -63,7 +63,7 @@ public class Input {
             if (MainFrame.getInputRandomWindow() == null)
                 MainFrame.setInputRandomWindow(new IntegerInput(1,
                         Data.getMaxPoints() - Data.getCountOfPoints(),
-                        Input::generateRandomPoints, "Size", "Points count", 2));
+                        Input::generateRandomPoints, "Random", "Points count", 2));
             else
                 MainFrame.getInputRandomWindow().setVisible(true);
         }
