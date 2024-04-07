@@ -1,6 +1,6 @@
 package ru.yearprog.yearprog.windows;
 
-import ru.yearprog.yearprog.Main;
+import ru.yearprog.yearprog.MainProperties;
 import ru.yearprog.yearprog.data.Quadrilateral;
 
 import javax.swing.*;
@@ -31,7 +31,7 @@ public class QuadrilateralInfo extends JFrame {
         labels.add(area);
         labels.add(type);
         this.add(panel);
-        this.setBounds(Main.getFieldSize() + 20, 0, 300, 225);
+        this.setBounds(MainProperties.getFieldSize() + 20, 0, 300, 225);
         this.setResizable(false);
         this.setVisible(true);
     }

@@ -1,6 +1,6 @@
 package ru.yearprog.yearprog.input;
 
-import ru.yearprog.yearprog.Main;
+import ru.yearprog.yearprog.MainProperties;
 import ru.yearprog.yearprog.data.Data;
 import ru.yearprog.yearprog.windows.MainFrame;
 
@@ -29,7 +29,7 @@ public class Input {
 
                 try {
                     Point p = new Point(Integer.parseInt(sd[0]), Integer.parseInt(sd[1]));
-                    if (Math.abs(p.x) > Main.getFieldSize() / 2 || Math.abs(p.y) > Main.getFieldSize() / 2) {
+                    if (Math.abs(p.x) > MainProperties.getFieldSize() / 2 || Math.abs(p.y) > MainProperties.getFieldSize() / 2) {
                         JOptionPane.showMessageDialog(parentComponent, "Out of bounce point!", "Error!", JOptionPane.ERROR_MESSAGE); return;
                     }
                     pointsCur[index] = p;
@@ -61,7 +61,9 @@ public class Input {
         }
         else {
             if (MainFrame.getInputRandomWindow() == null)
-                MainFrame.setInputRandomWindow(new IntegerInput(1, Data.getMaxPoints() - Data.getCountOfPoints(), Input::generateRandomPoints, "Size", "Points count", true, false, 2));
+                MainFrame.setInputRandomWindow(new IntegerInput(1,
+                        Data.getMaxPoints() - Data.getCountOfPoints(),
+                        Input::generateRandomPoints, "Size", "Points count", 2));
             else
                 MainFrame.getInputRandomWindow().setVisible(true);
         }
@@ -74,8 +76,8 @@ public class Input {
         int size = Data.getCountOfPoints() + value;
 
         while (pointsSet.size() < size) {
-            int x = random.nextInt(Main.getFieldSize());
-            int y = random.nextInt(Main.getFieldSize());
+            int x = random.nextInt(MainProperties.getFieldSize());
+            int y = random.nextInt(MainProperties.getFieldSize());
             Point point = new Point(x, y);
             pointsSet.add(point);
         }

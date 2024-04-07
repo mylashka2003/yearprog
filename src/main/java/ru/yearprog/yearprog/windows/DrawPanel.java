@@ -1,6 +1,6 @@
 package ru.yearprog.yearprog.windows;
 
-import ru.yearprog.yearprog.Main;
+import ru.yearprog.yearprog.MainProperties;
 import ru.yearprog.yearprog.data.Data;
 
 import javax.swing.*;
@@ -14,7 +14,7 @@ import static ru.yearprog.yearprog.windows.MainFrame.*;
 public class DrawPanel extends JPanel implements MouseListener {
     public DrawPanel() {
         super(true);
-        this.setPreferredSize(new Dimension(Main.getFieldSize(), Main.getFieldSize()));
+        this.setPreferredSize(new Dimension(MainProperties.getFieldSize(), MainProperties.getFieldSize()));
         this.addMouseListener(this);
     }
 
@@ -22,8 +22,8 @@ public class DrawPanel extends JPanel implements MouseListener {
     public void paint(Graphics g) {
         super.paint(g);
 
-        if (drawCoordinateLines) drawCoordinateLines(g, Main.getFieldSize());
-        if (drawCoordinatePlane) drawCoordinatePlane(g, Main.getFieldSize(), coordinatePlaneSkip);
+        if (drawCoordinateLines) drawCoordinateLines(g, MainProperties.getFieldSize());
+        if (drawCoordinatePlane) drawCoordinatePlane(g, MainProperties.getFieldSize(), coordinatePlaneSkip);
 
         for (int i = 0; i < Data.getCountOfPoints(); i++) {
             drawPoint(Color.BLACK, Data.getPoints()[i], g);

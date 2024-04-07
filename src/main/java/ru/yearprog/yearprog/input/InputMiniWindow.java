@@ -1,6 +1,6 @@
 package ru.yearprog.yearprog.input;
 
-import ru.yearprog.yearprog.Main;
+import ru.yearprog.yearprog.MainProperties;
 import ru.yearprog.yearprog.data.Data;
 import ru.yearprog.yearprog.windows.MainFrame;
 import ru.yearprog.yearprog.workers.CountCycle;
@@ -83,10 +83,10 @@ public class InputMiniWindow extends JFrame {
         try {
             int x = Integer.parseInt(xs);
             int y = Integer.parseInt(ys);
-            if (x >= -Main.getFieldSize() / 2 && x <= Main.getFieldSize() / 2 && y >= -Main.getFieldSize() / 2 && y <= Main.getFieldSize() / 2) {
+            if (x >= -MainProperties.getFieldSize() / 2 && x <= MainProperties.getFieldSize() / 2 && y >= -MainProperties.getFieldSize() / 2 && y <= MainProperties.getFieldSize() / 2) {
                 addPoint(new Point(x, y));
             } else
-                JOptionPane.showMessageDialog(this, "Number from " + -Main.getFieldSize() / 2 + " to " + Main.getFieldSize() / 2, "Error!", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Number from " + -MainProperties.getFieldSize() / 2 + " to " + MainProperties.getFieldSize() / 2, "Error!", JOptionPane.ERROR_MESSAGE);
         } catch (NumberFormatException err) {
             JOptionPane.showMessageDialog(this, "Incorrect format!", "Error!", JOptionPane.ERROR_MESSAGE);
         }
@@ -110,9 +110,9 @@ public class InputMiniWindow extends JFrame {
     private void finishAction() {
         if (Data.getCountOfPoints() < 4) JOptionPane.showMessageDialog(this, "Not enough points!", "Error!", JOptionPane.ERROR_MESSAGE);
         else {
-            Main.getF().disposeAll();
-            Main.getF().dispose();
-            new CountCycle();
+            MainProperties.getF().disposeAll();
+            MainProperties.getF().dispose();
+            MainProperties.setCountCycle(new CountCycle());
         }
     }
 
@@ -142,11 +142,11 @@ public class InputMiniWindow extends JFrame {
     }
 
     public static void movePoint(Point point) {
-        point.x = Main.getFieldSize() / 2 + point.x;
-        point.y = Main.getFieldSize() / 2 - point.y;
+        point.x = MainProperties.getFieldSize() / 2 + point.x;
+        point.y = MainProperties.getFieldSize() / 2 - point.y;
     }
 
     public static void demovePoint(Point point) {
-        point.setLocation(point.x - Main.getFieldSize() / 2, point.y * -1 + Main.getFieldSize() / 2);
+        point.setLocation(point.x - MainProperties.getFieldSize() / 2, point.y * -1 + MainProperties.getFieldSize() / 2);
     }
 }

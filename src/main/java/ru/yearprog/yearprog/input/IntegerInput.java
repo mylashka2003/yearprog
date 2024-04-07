@@ -1,6 +1,5 @@
 package ru.yearprog.yearprog.input;
 
-import ru.yearprog.yearprog.Main;
 import ru.yearprog.yearprog.windows.MainFrame;
 
 import javax.swing.*;
@@ -15,27 +14,18 @@ public class IntegerInput extends JFrame {
     private final int max;
     private final Interface method;
     private final JTextField spinner;
-    private final boolean disposeAfterUse;
     private final String label;
+    private final int parent;
 
-    public IntegerInput(int min, int max, Interface method, String title, String label, boolean disposeAfterUse, boolean programStop, int parent) {
+    public IntegerInput(int min, int max, Interface method, String title, String label, int parent) {
         super(title);
         this.min = min;
         this.max = max;
         this.method = method;
         this.label = label;
-        this.disposeAfterUse = disposeAfterUse;
-        if (programStop) this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        else if (parent == 1) {
-            this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-            this.addWindowListener(new WindowAdapter() {
-                @Override
-                public void windowClosing(WindowEvent e) {
-                    Main.getInput().setSpinners();
-                    Main.getInput().setVisible(false);
-                }
-            });
-        } else if (disposeAfterUse) {
+        this.parent = parent;
+        if (parent == 1) this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        if (parent == 2) {
             this.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosing(WindowEvent e) {
@@ -76,7 +66,7 @@ public class IntegerInput extends JFrame {
             int value = Integer.parseInt(text);
             if (value >= min && value <= max) {
                 method.act(value);
-                if (disposeAfterUse) {
+                if (parent == 2) {
                     this.setSpinners();
                     this.setVisible(false);
                 }

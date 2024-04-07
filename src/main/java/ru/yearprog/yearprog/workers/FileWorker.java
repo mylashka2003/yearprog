@@ -14,17 +14,20 @@ public class FileWorker {
     public static void writeObjectToFile(File file, Object[] objects) {
         try {
             FileWriter fooWriter = new FileWriter(file, false);
-            for (Object object : objects) {
-                if (object != null) {
-                    if (object.getClass() == Point.class) {
-                        Point point = (Point) ((Point) object).clone();
+            for (int i = 0; i < objects.length; i++) {
+                if (objects[i] != null) {
+                    if (objects[i] instanceof Point) {
+                        Point point = (Point) ((Point) objects[i]).clone();
                         InputMiniWindow.demovePoint(point);
                         fooWriter.write(point.x + " " + point.y + "\n");
                     }
 
-                    if (object.getClass() == Quadrilateral.class) {
-                        Quadrilateral quadrilateral = (Quadrilateral) object;
-                        fooWriter.write(quadrilateral +"\n");
+                    if (objects[i] instanceof Quadrilateral quadrilateral) {
+                        if (i != objects.length - 1) fooWriter.write(quadrilateral +"\n");
+                        else {
+                            fooWriter.write("-----");
+                            fooWriter.write(quadrilateral.toString());
+                        }
                     }
                 }
             }
@@ -40,6 +43,11 @@ public class FileWorker {
         fileChooser.setDialogTitle("Choose file");
         if (fileChooser.showOpenDialog(parentComponent) == JFileChooser.APPROVE_OPTION) {
             if (countDownLatch != null) countDownLatch.countDown();
+            String name = fileChooser.getSelectedFile().getName();
+            if (!name.endsWith("txt")) {
+                JOptionPane.showMessageDialog(parentComponent, "Not .txt file!", "Error!", JOptionPane.ERROR_MESSAGE);
+                return null;
+            }
             return fileChooser.getSelectedFile();
         } else if (close) {
             System.exit(130);

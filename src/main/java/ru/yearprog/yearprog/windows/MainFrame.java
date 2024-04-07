@@ -53,7 +53,7 @@ public class MainFrame extends JFrame {
     }
 
     private JMenu createLocalizationMenu() {
-        JMenu localization = new JMenu(Main.getMessages().getString("localization.menu"));
+        JMenu localization = new JMenu(Localization.getMessages().getString("localization.menu"));
         localization.setName("localization.menu");
         JRadioButtonMenuItem ru = new JRadioButtonMenuItem("ru");
         JRadioButtonMenuItem en = new JRadioButtonMenuItem("en");
@@ -64,7 +64,8 @@ public class MainFrame extends JFrame {
         localization.add(ru);
         localization.add(en);
         ActionListener listener = e -> {
-            Main.setCurrentLocale(e.getActionCommand());
+            Localization.setCurrentLocale(e.getActionCommand());
+            //System.out.println(Localization.getCurrentLocale());
             updateComponents(menuBar);
         };
         ru.addActionListener(listener);
@@ -74,9 +75,8 @@ public class MainFrame extends JFrame {
 
     private void updateComponents(Container container) {
         for (Component c : container.getComponents()) {
-            if (c instanceof JMenu) {
-                JMenu jMenu = (JMenu) c;
-                jMenu.setText(Main.getMessages().getString(jMenu.getName()));
+            if (c instanceof JMenu jMenu) {
+                jMenu.setText(Localization.getMessages().getString(jMenu.getName()));
             }
         }
         this.revalidate();
@@ -92,7 +92,7 @@ public class MainFrame extends JFrame {
                 if (ctrlPressed && zPressed && lastHandInputed) {
                     lastHandInputed = false;
                     Data.removeLast();
-                    Main.getF().repaint();
+                    MainProperties.getF().repaint();
                 }
             }
 
@@ -105,7 +105,7 @@ public class MainFrame extends JFrame {
     }
 
     private JMenu createGraphicsMenu() {
-        JMenu graphics = new JMenu(Main.getMessages().getString("graphics.menu"));
+        JMenu graphics = new JMenu(Localization.getMessages().getString("graphics.menu"));
         graphics.setName("graphics.menu");
         JCheckBoxMenuItem line  = new JCheckBoxMenuItem("Line");
         line.setState(true);
@@ -145,7 +145,7 @@ public class MainFrame extends JFrame {
     }
 
     private JMenu createFileMenu() {
-        JMenu file = new JMenu(Main.getMessages().getString("file.menu"));
+        JMenu file = new JMenu(Localization.getMessages().getString("file.menu"));
         file.setName("file.menu");
         JMenuItem open = new JMenuItem("Open");
         JMenuItem save = new JMenuItem("Save");
@@ -169,7 +169,7 @@ public class MainFrame extends JFrame {
     }
 
     private JMenu createActionsMenu() {
-        JMenu actions = new JMenu(Main.getMessages().getString("actions.menu"));
+        JMenu actions = new JMenu(Localization.getMessages().getString("actions.menu"));
         actions.setName("actions.menu");
         JMenuItem finish = new JMenuItem("Finish");
         JMenuItem clear = new JMenuItem("Clear");
@@ -189,7 +189,7 @@ public class MainFrame extends JFrame {
             } else {
                 this.disposeAll();
                 this.dispose();
-                new CountCycle();
+                MainProperties.setCountCycle(new CountCycle());
             }
         });
 
@@ -197,7 +197,7 @@ public class MainFrame extends JFrame {
     }
 
     private JMenu createInputMenu() {
-        JMenu input = new JMenu(Main.getMessages().getString("input.menu"));
+        JMenu input = new JMenu(Localization.getMessages().getString("input.menu"));
         input.setName("input.menu");
 
         JMenuItem file = new JMenuItem("File");
@@ -239,10 +239,6 @@ public class MainFrame extends JFrame {
         return inputMiniWindow;
     }
 
-    public static void setInputMiniWindow(InputMiniWindow inputMiniWindow) {
-        MainFrame.inputMiniWindow = inputMiniWindow;
-    }
-
     public static void drawPoint(Color color, Point point, Graphics g) {
         g.setColor(color);
         g.fillOval(point.x - 3, point.y - 3, 6, 6);
@@ -272,10 +268,10 @@ public class MainFrame extends JFrame {
 
     public static void drawCoordinatePlane(Graphics g, int size, int skip) {
         for (int i = 0; i < size / 2; i += skip) {
-            drawDashedLine(g, Main.getFieldSize() / 2 + i, 0, Main.getFieldSize() / 2 + i, size);
-            drawDashedLine(g, Main.getFieldSize() / 2 - i, 0, Main.getFieldSize() / 2 - i, size);
-            drawDashedLine(g, 0, Main.getFieldSize() / 2 + i, size, Main.getFieldSize() / 2 + i);
-            drawDashedLine(g, 0, Main.getFieldSize() / 2 - i, size, Main.getFieldSize() / 2 - i);
+            drawDashedLine(g, MainProperties.getFieldSize() / 2 + i, 0, MainProperties.getFieldSize() / 2 + i, size);
+            drawDashedLine(g, MainProperties.getFieldSize() / 2 - i, 0, MainProperties.getFieldSize() / 2 - i, size);
+            drawDashedLine(g, 0, MainProperties.getFieldSize() / 2 + i, size, MainProperties.getFieldSize() / 2 + i);
+            drawDashedLine(g, 0, MainProperties.getFieldSize() / 2 - i, size, MainProperties.getFieldSize() / 2 - i);
         }
     }
 
