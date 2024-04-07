@@ -59,7 +59,12 @@ public class Input {
         if (1 > Data.getMaxPoints() - Data.getCountOfPoints()) {
             JOptionPane.showMessageDialog(parentComponent, "Too many points!", "Error!", JOptionPane.ERROR_MESSAGE);
         }
-        else new IntegerInput(1, Data.getMaxPoints() - Data.getCountOfPoints(), Input::generateRandomPoints, "Size", "Points count", true, false);
+        else {
+            if (MainFrame.getInputRandomWindow() == null)
+                MainFrame.setInputRandomWindow(new IntegerInput(1, Data.getMaxPoints() - Data.getCountOfPoints(), Input::generateRandomPoints, "Size", "Points count", true, false, 2));
+            else
+                MainFrame.getInputRandomWindow().setVisible(true);
+        }
     }
 
     private static void generateRandomPoints(int value) {

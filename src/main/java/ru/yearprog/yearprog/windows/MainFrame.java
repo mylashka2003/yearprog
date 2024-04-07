@@ -4,6 +4,7 @@ import ru.yearprog.yearprog.*;
 import ru.yearprog.yearprog.data.Data;
 import ru.yearprog.yearprog.input.Input;
 import ru.yearprog.yearprog.input.InputMiniWindow;
+import ru.yearprog.yearprog.input.IntegerInput;
 import ru.yearprog.yearprog.workers.CountCycle;
 import ru.yearprog.yearprog.workers.FileWorker;
 
@@ -21,7 +22,8 @@ public class MainFrame extends JFrame {
     private static boolean zPressed = false;
     private static boolean lastHandInputed = false;
     private static JMenuBar menuBar;
-    private static InputMiniWindow inputMiniWindow;
+    private static InputMiniWindow inputMiniWindow = null;
+    private static IntegerInput inputRandomWindow = null;
 
     public static void setLastHandInputed(boolean lastHandInputed) {
         MainFrame.lastHandInputed = lastHandInputed;
@@ -185,6 +187,7 @@ public class MainFrame extends JFrame {
             if (Data.getCountOfPoints() < 4) {
                 JOptionPane.showMessageDialog(this, "Not enough points!", "Error!", JOptionPane.ERROR_MESSAGE);
             } else {
+                this.disposeAll();
                 this.dispose();
                 new CountCycle();
             }
@@ -215,7 +218,8 @@ public class MainFrame extends JFrame {
         });
 
         keyboard.addActionListener(e -> {
-            if(inputMiniWindow == null) inputMiniWindow = new InputMiniWindow();
+            if (inputMiniWindow == null) inputMiniWindow = new InputMiniWindow();
+            else inputMiniWindow.setVisible(true);
         });
 
         random.addActionListener(e -> Input.getRandomPoints(this));
@@ -223,9 +227,20 @@ public class MainFrame extends JFrame {
         return input;
     }
 
-    public static void disposeMini() {
-        inputMiniWindow.dispose();
-        inputMiniWindow = null;
+    public static void setInputRandomWindow(IntegerInput inputRandomWindow) {
+        MainFrame.inputRandomWindow = inputRandomWindow;
+    }
+
+    public static IntegerInput getInputRandomWindow() {
+        return inputRandomWindow;
+    }
+
+    public static InputMiniWindow getInputMiniWindow() {
+        return inputMiniWindow;
+    }
+
+    public static void setInputMiniWindow(InputMiniWindow inputMiniWindow) {
+        MainFrame.inputMiniWindow = inputMiniWindow;
     }
 
     public static void drawPoint(Color color, Point point, Graphics g) {
@@ -274,5 +289,10 @@ public class MainFrame extends JFrame {
 
         g2d.drawLine(x1, y1, x2, y2);
         g2d.dispose();
+    }
+
+    public void disposeAll() {
+        if (inputMiniWindow != null) inputMiniWindow.dispose();
+        if (inputRandomWindow != null) inputRandomWindow.dispose();
     }
 }

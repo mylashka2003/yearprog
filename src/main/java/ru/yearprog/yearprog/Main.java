@@ -15,6 +15,10 @@ public class Main {
     private static ResourceBundle messagesRU;
     private static ResourceBundle messagesEN;
 
+    public static IntegerInput getInput() {
+        return input;
+    }
+
     public static int getFieldSize() {
         return fieldSize;
     }
@@ -51,7 +55,7 @@ public class Main {
             } else {
                 JOptionPane.showMessageDialog(input, "Windows size: 600 - 1000, step 100", "Error!", JOptionPane.ERROR_MESSAGE);
             }
-        }, "Size", "Field size", false, true);
+        }, "Size", "Field size", false, true, 1);
         input.setLocationRelativeTo(null);
     }
 }

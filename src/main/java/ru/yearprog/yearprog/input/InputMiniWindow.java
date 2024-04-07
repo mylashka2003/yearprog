@@ -9,6 +9,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.Arrays;
 
 public class InputMiniWindow extends JFrame {
@@ -29,6 +31,7 @@ public class InputMiniWindow extends JFrame {
         this.add(panel);
         this.setResizable(false);
         this.setFocusable(true);
+        this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         KeyAdapter keyAdapter = createAdapter();
         this.addKeyListener(keyAdapter);
         this.pack();
@@ -41,7 +44,19 @@ public class InputMiniWindow extends JFrame {
         finish.addKeyListener(keyAdapter);
         next.addActionListener(e -> readValue());
         finish.addActionListener(e -> finishAction());
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                MainFrame.getInputMiniWindow().setSpinners();
+                MainFrame.getInputMiniWindow().setVisible(false);
+            }
+        });
         this.setVisible(true);
+    }
+
+    public void setSpinners() {
+        xSpinner.setText("0");
+        ySpinner.setText("0");
     }
 
     private KeyAdapter createAdapter() {
@@ -95,8 +110,7 @@ public class InputMiniWindow extends JFrame {
     private void finishAction() {
         if (Data.getCountOfPoints() < 4) JOptionPane.showMessageDialog(this, "Not enough points!", "Error!", JOptionPane.ERROR_MESSAGE);
         else {
-            MainFrame.disposeMini();
-            this.dispose();
+            Main.getF().disposeAll();
             Main.getF().dispose();
             new CountCycle();
         }
